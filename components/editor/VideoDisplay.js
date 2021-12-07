@@ -3,7 +3,7 @@ import { AspectRatio } from '@chakra-ui/react'
 const VideoDisplay = () => {
   return (
     // This video will have equal sides
-    <AspectRatio width='70vw' ratio={16/9}>
+    <AspectRatio overflowY="hidden" maxHeight="50vh" ratio={1}>
       <iframe
         title='naruto'
         src='https://www.youtube.com/embed/QhBnZ6NPOY0'

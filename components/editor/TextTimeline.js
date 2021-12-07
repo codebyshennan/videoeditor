@@ -1,5 +1,5 @@
 import { MdOutlineTextFields } from 'react-icons/md'
-import { Box, Container, Flex, Icon, Text } from '@chakra-ui/react'
+import { Box, Container, Flex, Icon, Text, Spacer, HStack } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 
 
@@ -13,14 +13,22 @@ const TextTimeline = () => {
 
   return (
     <Box>
-      <Flex>
+      <HStack spacing = "20px" alignItems="center">
         <Box>
           <Icon as={MdOutlineTextFields} />
         </Box>
-        <Container>
-            <Text> { subtranscript } </Text>
-        </Container>
-      </Flex>
+        <Flex flex="1">
+          <Box>
+            <Text fontWeight="bold"> [ </Text>
+          </Box>
+          <Spacer />
+          <Box> { subtranscript } </Box>
+          <Spacer />
+          <Box>
+            <Text fontWeight="bold"> ] </Text>
+          </Box>
+        </Flex>
+      </HStack>
     </Box>
   )
 }
