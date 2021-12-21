@@ -6,11 +6,11 @@ import FileCard from './FileCard'
 import { v4 as uuidv4} from 'uuid'
 
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
-import { cleanClip } from '../components/clip-handlers/cleanClip';
-import { extractAudioClip } from '../components/clip-handlers/extractAudioClip';
-import { optimiseAudioClip } from '../components/clip-handlers/optimiseAudioClip';
+import { cleanClip } from '../clip-handlers/cleanClip';
+import { extractAudioClip } from '../clip-handlers/extractAudioClip';
+import { optimiseAudioClip } from '../clip-handlers/optimiseAudioClip';
 
-import { Loader } from '../components/Loader';
+// import { Loader } from '../Loader';
 
 // ============FIREBASE=============
 import {
