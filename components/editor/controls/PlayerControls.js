@@ -1,6 +1,6 @@
 import { Slider, SliderFilledTrack, SliderTrack, SliderThumb, Icon } from "@chakra-ui/react"
 import { Box, Flex, Container, Stack, Button } from "@chakra-ui/react"
-import DisplayHelp from "./DisplayHelp"
+import DisplayHelp from "../video/DisplayHelp"
 import { FaPlay, FaCut, FaPause, FaFastBackward, FaFastForward, FaInfoCircle } from 'react-icons/fa'
 import { useState } from 'react'
 import { MdOutlinePanTool } from "react-icons/md"

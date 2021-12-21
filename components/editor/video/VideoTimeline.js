@@ -1,9 +1,8 @@
 import { MdVideocam } from 'react-icons/md'
 import { Box, Container, Flex, Icon, Text, HStack } from '@chakra-ui/react'
 import { useState, useEffect, useRef } from 'react'
-import VideoSeq from '../../components/editor/VideoSeq'
+import VideoSeq from './VideoSeq'
 import Draggable from 'react-draggable'
-
 
 const VideoTimeline = () => {  
 

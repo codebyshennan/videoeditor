@@ -1,7 +1,14 @@
 import { useState, useEffect, useRef, useContext, createContext } from 'react'
-import Editor from '../../components/editor/Editor'
-import Transcript from '../../components/editor/Transcript'
+import Editor from '../../components/Editor'
+import Transcript from '../../components/Transcript'
 import { Flex, TabPanel, Tabs, Tab, TabPanels,TabList } from '@chakra-ui/react'
+import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
+
+// TODO: 
+/**
+ * 1. make a nicer nav bar
+ * 2. ensure that the videosetting props are complete
+ */
 
 
 const ffmpeg = createFFmpeg({
@@ -14,25 +21,28 @@ export const AppContext = createContext()
 const Index = () => {
   // general video settings
   const [ videoSettings, setVideoSettings ] = useState({
-    video: [], // for now just take in one video file
-    processStage: [],
-    timeTaken: [],
-    audio: "",
-    audioUuid: [],
-    processRatio: 1,
-    timings: [],
-    scale: 0,
-    videoReady: false,
-    ffmpegReady: false,
     playing: false,
     isMuted: false,
+    thumbnails: [],
     currentGrabbed: {
       index: 0,
       type: 'none'
     },
     deletingGrabber: false,
     currentWarning: null,
-    imageUrl: "",
+
+    videos: [], // for now just take in one video file
+    videoReady: false,
+    timings: [],
+    scale: 0,
+
+    audio: "",
+    audioUuid: [],
+    processRatio: 1,
+    processStage: [],
+    timeTaken: [],
+    ffmpegReady: false,
+    
     transcription: []
   })
 
@@ -40,12 +50,19 @@ const Index = () => {
     <AppContext.Provider value= {{ videoSettings, setVideoSettings }}>
       <Tabs isFitted variant='enclosed'>
         <TabPanels>
+
           <TabPanel>
             <Editor/> 
           </TabPanel>
+
           <TabPanel>
             <Transcript /> 
           </TabPanel>
+
+          <TabPanel>
+            {/* download page */}
+          </TabPanel>
+
         </TabPanels>
         <TabList>
           <Tab> Upload </Tab>

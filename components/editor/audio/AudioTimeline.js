@@ -1,7 +1,7 @@
 import { MdOutlineAudiotrack } from 'react-icons/md'
 import { Box, Container, Flex, Icon, Text, HStack } from '@chakra-ui/react'
 import { useState, useEffect, useContext } from 'react'
-import { AppContext } from '../../pages/main'
+import { AppContext } from '../../../pages/main'
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
 
 const ffmpeg = createFFmpeg({

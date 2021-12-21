@@ -1,21 +1,20 @@
-import Navbar from './Navbar'
-import SidePanel from './SidePanel'
-import VideoDisplay from './VideoDisplay'
-import PlayerControls from './PlayerControls' 
-import VideoTimeline from './VideoTimeline'
-import AudioTimeline from './AudioTimeline'
-import TextTimeline from './TextTimeline'
-import ProgressBar from './ProgressBar'
-import VideoPlayer from './VideoPlayer'
+import SidePanel from './file/SidePanel'
+import VideoDisplay from './player/VideoDisplay'
+import PlayerControls from './editor/controls/PlayerControls' 
+import VideoTimeline from './editor/video/VideoTimeline'
+import AudioTimeline from './editor/audio/AudioTimeline'
+import TextTimeline from './editor/text/TextTimeline'
+import ProgressBar from './editor/controls/ProgressBar'
 import { Box, Container, VStack, StackDivider, Grid, Flex } from '@chakra-ui/react'
 import { useRef, useEffect, useState, useContext } from 'react'
-import { AppContext } from '../../pages/main'
+import { AppContext } from '../pages/main'
 import { useColorMode, useColorModeValue } from '@chakra-ui/react'
 
 const Editor = () => {
 
   const { videoSettings, setVideoSettings } = useContext(AppContext)
   const [ videoCanvasDimensions, setVideoCanvasDimensions ] = useState()
+  const videoCanvasContainer = useRef()
 
   useEffect(() => {
     const ctx = videoCanvasContainer.current.getBoundingClientRect()

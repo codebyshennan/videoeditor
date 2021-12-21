@@ -34,5 +34,7 @@ yarn-error.log*
 # vercel
 .vercel
 
-
+# gcloud_STT
 gcloud_STT.json
+
+# firebase API

@@ -25,7 +25,7 @@ import {
   collection,
 } from 'firebase/firestore';
 
-import { firestore, auth } from '../lib/firebase'
+import { firestore, auth } from '../firebase'
 
 const baseStyle = {
   flex: 1,
@@ -42,7 +42,6 @@ const baseStyle = {
   outline: 'none',
   transition: 'border .24s ease-in-out'
 };
-
 
 const activeStyle = {
   borderColor: '#2196f3'

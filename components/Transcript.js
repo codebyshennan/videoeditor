@@ -1,9 +1,9 @@
-import SideNav from '../../components/transcript/SideNav'
-import TopNav from '../../components/transcript/TopNav'
-import Header from '../../components/transcript/Header'
-import MetaInfo from '../../components/transcript/MetaInfo'
-import Transcription from '../../components/transcript/Transcription'
-import AudioPlayer from '../../components/transcript/AudioPlayer'
+import SideNav from './transcript/SideNav'
+import TopNav from './transcript/TopNav'
+import Header from './transcript/Header'
+import MetaInfo from './transcript/MetaInfo'
+import Transcription from './transcript/Transcription'
+import AudioPlayer from './transcript/AudioPlayer'
 import { Box, Flex, Container } from '@chakra-ui/react'
 
 const Transcript = () => {
