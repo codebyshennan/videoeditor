@@ -12,24 +12,22 @@ const TextTimeline = () => {
 
 
   return (
-    <Box>
-      <HStack spacing = "20px" alignItems="center">
+    <HStack position="absolute" spacing = "20px" alignItems="center" h="33%">
+      <Box>
+        <Icon as={MdOutlineTextFields} />
+      </Box>
+      <Flex flex="1">
         <Box>
-          <Icon as={MdOutlineTextFields} />
+          <Text fontWeight="bold"> [ </Text>
         </Box>
-        <Flex flex="1">
-          <Box>
-            <Text fontWeight="bold"> [ </Text>
-          </Box>
-          <Spacer />
-          <Box> { subtranscript } </Box>
-          <Spacer />
-          <Box>
-            <Text fontWeight="bold"> ] </Text>
-          </Box>
-        </Flex>
-      </HStack>
-    </Box>
+        <Spacer />
+        <Box> { subtranscript } </Box>
+        <Spacer />
+        <Box>
+          <Text fontWeight="bold"> ] </Text>
+        </Box>
+      </Flex>
+    </HStack>
   )
 }
 

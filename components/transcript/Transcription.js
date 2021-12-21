@@ -17,7 +17,7 @@ const renderTranscript = transcripts.map( (text, index) => {
 const Transcription = () => {
 
   return (
-  <Box pl='6' bg='white'>
+  <Box pl='6'>
     { renderTranscript }
   </Box>
   )

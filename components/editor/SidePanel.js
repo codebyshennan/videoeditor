@@ -1,9 +1,13 @@
+import FileUpload from '../../components/editor/FileUpload'
+import { Stack } from '@chakra-ui/react'
 
 const SidePanel = () => {
   return (
-    <div>
-      this is a side panel
-    </div>
+    <Stack
+      direction="column"
+    >
+      <FileUpload videoSettings={videoSettings} setVideoSettings={setVideoSettings}/>
+    </Stack>
   )
 }
 

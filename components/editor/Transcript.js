@@ -6,11 +6,13 @@ import Transcription from '../../components/transcript/Transcription'
 import AudioPlayer from '../../components/transcript/AudioPlayer'
 import { Box, Flex, Container } from '@chakra-ui/react'
 
-const Index = () => {
+const Transcript = () => {
 
 
   return (
-    <Flex>
+    <Flex
+      height ="90vh"
+    >
       <SideNav/>
       {/* <Spacer /> */}
       <Flex 
@@ -20,7 +22,7 @@ const Index = () => {
       >
         <Flex
           direction="column" 
-          height ="90vh"
+          
           overflowY="scroll"
         >
           <TopNav />
@@ -44,4 +46,4 @@ const Index = () => {
 }
 
 
-export default Index
+export default Transcript
