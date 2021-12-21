@@ -25,7 +25,7 @@ import {
   collection,
 } from 'firebase/firestore';
 
-import { firestore, auth } from '../firebase'
+// import { firestore, auth } from '../firebase'
 
 const baseStyle = {
   flex: 1,
@@ -61,7 +61,7 @@ const FileUpload = () => {
   const { videoSettings, setVideoSettings } = useContext(AppContext)
   const thumbnailContainer = useRef()
   const ffmpegRatio = useRef()
-  let user = auth.currentUser
+  // let user = auth.currentUser
   const AUDIOFILENAME = 'test.aac';
   const FINALAUDIO = 'finalAudio.aac';
   const PROCESSEDAUDIOFN = 'finalcut.mp4';
@@ -167,34 +167,34 @@ const FileUpload = () => {
     }
   }
   
-  useEffect(()=> {
-    // check auth fr user
-    if (user != null && videoSettings.audioUuid !== null) {
-      const userUid = user.uid
-      console.log('userUid', userUid)
+  // useEffect(()=> {
+  //   // check auth fr user
+  //   if (user != null && videoSettings.audioUuid !== null) {
+  //     const userUid = user.uid
+  //     console.log('userUid', userUid)
 
-      // listen for transcript
-      const ubsub = onSnapshot(
-        doc(firestore, 'users', userUid, 'transcript', videoSettings.audioUuid),
-        (doc) => {
-          if(doc.data() != undefined && 'response' in doc.data()) {
-            console.log('current data:', JSON.parse(doc.data().response))
-            setVideoSettings({
-              transcription: JSON.parse(doc.data().response).result
-            })
-          }
-        }
-      )
+  //     // listen for transcript
+  //     const ubsub = onSnapshot(
+  //       doc(firestore, 'users', userUid, 'transcript', videoSettings.audioUuid),
+  //       (doc) => {
+  //         if(doc.data() != undefined && 'response' in doc.data()) {
+  //           console.log('current data:', JSON.parse(doc.data().response))
+  //           setVideoSettings({
+  //             transcription: JSON.parse(doc.data().response).result
+  //           })
+  //         }
+  //       }
+  //     )
 
-      // deleting transcription takes time
-      const deleteStatus = deleteDoc(
-        doc(firestore, 'users', userUid, 'transcript', videoSettings.audioUuid)
-      )
-      timeStampAtStage(stage.ANALYSED_AUDIO)
-    } else {
-      console.log('no user logged in, kindly log in')
-    }
-  }, [videoSettings.audio])
+  //     // deleting transcription takes time
+  //     const deleteStatus = deleteDoc(
+  //       doc(firestore, 'users', userUid, 'transcript', videoSettings.audioUuid)
+  //     )
+  //     timeStampAtStage(stage.ANALYSED_AUDIO)
+  //   } else {
+  //     console.log('no user logged in, kindly log in')
+  //   }
+  // }, [videoSettings.audio])
 
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone( { onDrop } )
