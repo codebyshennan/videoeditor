@@ -1,10 +1,16 @@
 import { Progress } from '@chakra-ui/react'
+import StatusText from './StatusText'
+import { useState, useContext } from 'react'
+import {Flex} from '@chakra-ui/react'
 
 const ProgressBar = () => {
+
+  const [ loading, setLoading ] = useState(false)
+
   return (
-    <div>
-      <Progress hasStripe value={64} />
-    </div>
+    loading ? 
+        <Progress hasStripe value={64} /> : 
+        <StatusText />
   )
 }
 

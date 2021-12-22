@@ -1,9 +1,10 @@
 
 import { useCallback, useMemo, useRef, useContext } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { AppContext } from '../../pages/main';
+import { AppContext, FileContext } from '../../pages/main';
 import FileCard from './FileCard'
 import { v4 as uuidv4} from 'uuid'
+import { useToast } from '@chakra-ui/react'
 
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 import { cleanClip } from '../clip-handlers/cleanClip';
@@ -56,21 +57,52 @@ const rejectStyle = {
 };
 
 
-const FileUpload = () => {
 
-  const { videoSettings, setVideoSettings } = useContext(AppContext)
+const ffmpeg = createFFmpeg({
+  corePath:'/ffmpeg-core/ffmpeg-core.js',
+  log: true
+})
+
+const FileUpload = () => {
+  const toast = useToast()
+  const { fileUploads, setFileUploads } = useContext(FileContext)
+  const { videoSettings } = useContext(AppContext)
   const thumbnailContainer = useRef()
+  const waveFormContainer = useRef()
   const ffmpegRatio = useRef()
   // let user = auth.currentUser
   const AUDIOFILENAME = 'test.aac';
   const FINALAUDIO = 'finalAudio.aac';
   const PROCESSEDAUDIOFN = 'finalcut.mp4';
 
+  const getWaveForm = async(file) => {
+    await ffmpeg.load()
+    ffmpeg.FS("writeFile", `${file}`, await fetchFile(file))
+    await ffmpeg.run('-i', `${file}`, '-filter_complex', 'showwavespic=s=640x120', '-frames:v', '1', 'waveform.png')
+    
+    const allFiles = ffmpeg.FS('readdir','/') //list files inside specific path
+    console.log('All Files >>', allFiles)
+    const data = ffmpeg.FS('readfile', 'waveform.png')
+
+    const waveFormBlob = new Blob([data.buffer], { type: 'image/png'})
+    let waveform = document.createElement('img')
+    let canvas = document.createElement('canvas').getContext('2d')
+    canvas.drawImage(waveform, 0, 0)
+    waveform.src = URL.createObjectURL(waveFormBlob)
+    waveFormContainer.current.appendChild(waveform)
+  }
+
   // callback is just to get a snapshot of the video file
   const onDrop = useCallback( acceptedFiles => {
     //do something with the files
-
     acceptedFiles.forEach( file => {
+
+      videoSettings.current = {
+          ...videoSettings.current,
+          videos: [...videoSettings.current.videos, file],
+          audioUuid: uuidv4()
+        }
+      
       const reader = new FileReader()
       
       reader.onabort = () => {
@@ -82,14 +114,16 @@ const FileUpload = () => {
       }
 
       reader.onload = () => {
-        let blob = new Blob([reader.result], { type: file.type })
-        let url = URL.createObjectURL(blob)
+        let videoBlob = new Blob([reader.result], { type: file.type })
+        let url = URL.createObjectURL(videoBlob)
+      
 
         // save video settings upon reading
-        setVideoSettings({
-          video: [...video, file],
+        videoSettings.current = {
+          ...videoSettings.current,
+          videos: [...videoSettings.current.videos, file],
           audioUuid: uuidv4()
-        })
+        }
 
         let video = document.createElement('video')
         let timeupdate = () => {
@@ -113,10 +147,22 @@ const FileUpload = () => {
           let success = image.length > 100000
           if (success) {
             let thumbnail =  document.createElement('img')
+            thumbnail.width = video.videoWidth * 0.3
+            thumbnail.height = video.videoHeight * 0.3
             thumbnail.src = image
             thumbnailContainer.current.appendChild(thumbnail)
+            toast({
+              position: 'top',
+              title: 'Video Loaded.',
+              description: "The video file is ready to be processed.",
+              status: 'success',
+              duration: 3000,
+              isClosable: true,
+            })
             URL.revokeObjectURL(url)
           }
+
+          
           return success
         }
 
@@ -128,6 +174,13 @@ const FileUpload = () => {
         video.play()
       }
       reader.readAsArrayBuffer(file)
+      setFileUploads([...fileUploads, file])
+
+      try {
+        getWaveForm()
+      } catch (e) {
+        console.log(e)
+      }
     })
   }, [])
   
@@ -135,10 +188,11 @@ const FileUpload = () => {
   const timeStampAtStage = (stage) => {
     const currTime = Math.round(+ new Date())
     // can be combined
-    setVideoSettings({
-      timeTaken: [...videoSettings.timeTaken, currTime],
-      processStage: [...videoSettings.processStage, stage]
-    })
+    videoSettings.current = {
+      ...videoSettings.current,
+      timeTaken: [...videoSettings.current.timeTaken, currTime],
+      processStage: [...videoSettings.current.processStage, stage]
+    }
   }
 
   const load = async () => {
@@ -147,6 +201,7 @@ const FileUpload = () => {
       try {
         await ffmpeg.load().then(()=> {
           setVideoSettings({
+            ...videoSettings,
             ffmpegReady: true
           })
         })
@@ -161,9 +216,10 @@ const FileUpload = () => {
       }
     } else {
       console.log('ffmpeg loaded')
-      setVideoSettings({
+      videoSettings.current = {
+        ...videoSettings.current,
         ffmpegReady: true
-      })
+      }
     }
   }
   
@@ -174,7 +230,7 @@ const FileUpload = () => {
   //     console.log('userUid', userUid)
 
   //     // listen for transcript
-  //     const ubsub = onSnapshot(
+  //     const unsub = onSnapshot(
   //       doc(firestore, 'users', userUid, 'transcript', videoSettings.audioUuid),
   //       (doc) => {
   //         if(doc.data() != undefined && 'response' in doc.data()) {
@@ -224,6 +280,7 @@ const FileUpload = () => {
       <div ref={thumbnailContainer}>
         {/* <FileCard /> */}
       </div>
+      <div ref={waveFormContainer} ></div>
     </div>
   )
 

@@ -1,9 +1,11 @@
-import { MdOutlineTextFields } from 'react-icons/md'
 import { Box, Container, Flex, Icon, Text, Spacer, HStack } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { AppContext } from '../../../pages/main/index'
+import transcript from '../../../transcript'
 
 
 const TextTimeline = () => {
+  const { videoSettings, setVideoSettings } = useContext(AppContext)
   const [ subtranscript, setSubtranscript ] = useState("")
 
   useEffect(()=> {
@@ -12,11 +14,8 @@ const TextTimeline = () => {
 
 
   return (
-    <HStack position="absolute" spacing = "20px" alignItems="center" h="33%">
-      <Box>
-        <Icon as={MdOutlineTextFields} />
-      </Box>
-      <Flex flex="1">
+    <HStack alignItems="center">
+      <Flex >
         <Box>
           <Text fontWeight="bold"> [ </Text>
         </Box>

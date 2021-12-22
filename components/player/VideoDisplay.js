@@ -1,70 +1,58 @@
-import { AspectRatio } from '@chakra-ui/react'
-import { useRef, useEffect, useContext, useState } from 'react'
+import { useRef, useEffect, useContext, useState, forwardRef } from 'react'
+import { AppContext, FileContext } from '../../pages/main/index'
+import { Flex, AspectRatio, Container } from '@chakra-ui/react'
 
-const VideoDisplay = () => {
-  const fileUpload = useRef()
-  const videoCanvas = useRef()
-  const videoContainer = useRef()
+const VideoDisplay = ({ videoContainerRef }) => {
 
-  const [ videoSrc, setVideoSrc] = useState()
-  const [ videoReadiness, setVideoReadiness ] = useState({
-    scale : 0,
-    ready: false,
-  })
-  
-  // get the prop from the uploaded video
+  const [ playerSource, setPlayerSource ] = useState(null)
+  const { videoSettings } = useContext(AppContext)
+  const { fileUploads, setFileUploads } = useContext(FileContext)
+  const ratio = useRef( 16/9 )
+  // console.log(ratio.current)
 
-  const uploadFile = (ev) => {
-    setVideoSrc(URL.createObjectURL(ev.target.files[0]))
-  }
-
-  const readyToPlay = (ev) => {
-    setVideoReadiness({
-      scale: Math.min(videoCanvas.current.width / videoContainer.current.videoWidth, 
-        videoCanvas.current.height / videoContainer.current.videoHeight),
-      ready: true
-    })
-    console.log(videoContainer.current)
-    console.log(videoReadiness)
-    videoContainer.current.load()
-    videoContainer.current.play()
-    requestAnimationFrame(updateCanvas)
-  }
-
-  const updateCanvas = () => {
-    const ctx = videoCanvas.current.getContext('2d')
-
-    ctx.clearRect(0,0, videoCanvas.current.width, videoCanvas.current.height)
-
-    if(videoReadiness.ready) {
-      // videoContainer.current.muted = muted
-      const scale = videoReadiness.scale
-      const videoH = videoContainer.current.videoHeight
-      const videoW = videoContainer.current.videoWidth
-      const top = videoCanvas.current.height / 2 - (videoH / 2) * scale
-      const left = videoCanvas.current.width / 2 - (videoW / 2) * scale
-
-      ctx.drawImage(videoContainer.current, left, top, videoW * scale, videoH * scale)
+  // listen for changes to videoURL on context provider
+  useEffect(()=> {
+    // assuming there's only one video
+    // first convert to object URL (data parsed is raw file)
+    if(playerSource == null && fileUploads.length != 0) {
+      const url = URL.createObjectURL(fileUploads[0])
+      videoContainerRef.current.src = url
+    } else {
+      return
     }
 
-    requestAnimationFrame(updateCanvas)
+  }, [fileUploads])
+
+  const setRatio = () => {
+    const vw = videoContainerRef.current.videoWidth
+    const vh = videoContainerRef.current.videoHeight
+    ratio.current = Math.round(vw / vh)
+    console.log(ratio.current)
   }
-  
-  useEffect(() => {
-    videoCanvas.current.style.width="100%"
-    videoCanvas.current.style.height="100%"
-    videoCanvas.current.width = videoCanvas.current.offsetWidth
-    videoCanvas.current.height = videoCanvas.current.offsetHeight
-  }, [])
+
+  const VideoInput = forwardRef((props, ref) => {
+    const { src, type, ...newProps} = props
+
+    return (
+      <video ref={ref} {...newProps}>
+        <source src={src} type={type} />
+      </video>
+    )
+  })
 
 
   return (
-    <>
-      <canvas ref={videoCanvas}></canvas>
-      <video ref={videoContainer} onCanPlay={ readyToPlay }>
-        <source src={videoSrc} type="video/mp4" /> 
-      </video>
-    </>
+    <Container
+      maxWidth="45vw" maxHeight="45vh"
+    >
+      <AspectRatio ratio={ ratio.current }>
+        <VideoInput ref={videoContainerRef}
+          autoload = "metadata"
+          onLoadedMetadata = { setRatio }
+          type="video/mp4" 
+          src = { playerSource } />
+      </AspectRatio>
+    </Container>
   )
 }
 

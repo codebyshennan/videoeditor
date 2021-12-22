@@ -11,12 +11,6 @@ const TopNav = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Box ml='4'>
-          <Text fontWeight="bold"> 
-            <Icon as={ MdOutlineArrowBackIos } mr="3" />
-            My Conversations 
-          </Text>
-        </Box>
         <Flex mr="4" justifyContent="right" alignItems="center">
           <Input placeholder='Search' />
           <Container> 

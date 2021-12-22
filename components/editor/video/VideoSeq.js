@@ -1,10 +1,15 @@
 import { Flex } from '@chakra-ui/react'
+import { AppContext } from '../../../pages/main/index'
+import { useContext, useState, useRef, useEffect } from 'react'
+
+
 
 const VideoSeq = ({ videoSequences, setVideoSequences }) => {
 
+  const { videoSettings, setVideoSettings } = useContext(AppContext)
+
   const splitVideoSequences = (event) => {
 
-    console.log(videoSequences)
     const videoWidth = event.target.getBoundingClientRect().width
     const offset = event.target.getBoundingClientRect().left
     const mousePos = event.clientX

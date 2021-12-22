@@ -5,6 +5,8 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { UserContext } from '../components/context'
 import { useUserData } from '../components/hooks' 
+import Theme from './theme'
+
 
 export default function App({ Component, pageProps }) {
   // const apolloClient = useApollo(pageProps.initialApolloState)
@@ -13,7 +15,7 @@ export default function App({ Component, pageProps }) {
 
   return (
     // <ApolloProvider client={apolloClient}>
-      <ChakraProvider>
+      <ChakraProvider theme={Theme}>
         <UserContext.Provider value={userData} >
           <DndProvider backend={ HTML5Backend }>
             <Component {...pageProps} />

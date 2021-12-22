@@ -5,7 +5,10 @@ import { useState } from 'react'
 
 const AudioPlayer = () => {
   const [ playing, setPlaying ] = useState(false)
-
+  const [ duration, setDuration ] = useState({
+    start: "00:00",
+    end: "10:52"
+  })
 
   return (
     <Box w="100%">
@@ -13,15 +16,15 @@ const AudioPlayer = () => {
         justifyContent="space-between"
       >
         <Container>
-          00:00
+          { duration.start }
         </Container>
         <Container
           textAlign="right"
         >
-          10:52
+          { duration.end }
         </Container>
       </Flex>
-      <Slider aria-label={['min', 'max']} defaultValue={[30, 80]}>
+      <Slider aria-label={['min', 'max']} defaultValue={30}>
         <SliderTrack bg='red.100'>
           <SliderFilledTrack bg='tomato' />
         </SliderTrack>
@@ -29,7 +32,9 @@ const AudioPlayer = () => {
           {/* <Box color='tomato' as={MdGraphicEq} /> */}
         </SliderThumb>
       </Slider>
-      <Flex>
+      <Flex
+        alignItems="center"
+      >
         <Container>
           2x
         </Container>

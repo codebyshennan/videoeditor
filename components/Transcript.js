@@ -1,4 +1,3 @@
-import SideNav from './transcript/SideNav'
 import TopNav from './transcript/TopNav'
 import Header from './transcript/Header'
 import MetaInfo from './transcript/MetaInfo'
@@ -13,7 +12,6 @@ const Transcript = () => {
     <Flex
       height ="90vh"
     >
-      <SideNav/>
       {/* <Spacer /> */}
       <Flex 
         align="stretch"

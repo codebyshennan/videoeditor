@@ -1,8 +1,9 @@
 import { MdOutlineAudiotrack } from 'react-icons/md'
-import { Box, Container, Flex, Icon, Text, HStack } from '@chakra-ui/react'
-import { useState, useEffect, useContext } from 'react'
+import { Box, Container, Flex, Icon, Text, HStack, Img } from '@chakra-ui/react'
+import { useState, useEffect, useContext, useRef } from 'react'
 import { AppContext } from '../../../pages/main'
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
+import transcript from '../../../transcript'
 
 const ffmpeg = createFFmpeg({
   corePath:'/ffmpeg-core/ffmpeg-core.js',
@@ -10,51 +11,14 @@ const ffmpeg = createFFmpeg({
 })
 
 const AudioTimeline = () => {
-  const { videoSettings, setVideoSettings } = useContext(AppContext)
+  const { videoSettings } = useContext(AppContext)
   
-  const getWaveForm = async(file) => {
-    await ffmpeg.load()
-    ffmpeg.FS("writeFile", `${file}`, await fetchFile(file))
-    await ffmpeg.run('-i', `${file}`, '-filter_complex', 'showwavespic=s=640x120', '-frames:v', '1', 'output.png')
-    // await fs.promises.writeFile('./output.png', ffmpeg.FS('readFile','./output.png'))
-    process.exit(0)
-  }
-
-  const [ audioState, setAudioState ] = useState({
-    audioBuffer: null,
-    source: null,
-    lastTime: 0,
-    lastRefTime: 0,
-    ready: false
-  }) 
-
-  const reader = new FileReader()
-  const audioCtx = new AudioContext()
-
-  reader.onload = ()=> {
-    let buffer = reader.result
-    audioCtx.decodeAudioData( buffer, (audBuffer) => {
-      setAudioState({
-        audioBuffer: audBuffer,
-        ready: true
-      })
-    })
-  }
-
-  reader.readAsArrayBuffer(videoSettings.video[0])
-
   return (
-    <HStack
-      h="33%"
-    >
-      <Flex>
-        <Box>
-          <Icon as={MdOutlineAudiotrack} />
-        </Box>
-        <Container>
-            <Text> test </Text>
-        </Container>
-      </Flex>
+    <HStack spacing={0}>
+      <Flex bg="tomato" borderRadius={2} width="400px" borderColor="gray.400" border={"1px solid"}>.</Flex>
+      <Flex bg="orange" borderRadius={2} width="200px" borderColor="gray.400" border={"1px solid"}>.</Flex>
+      <Flex bg="green" borderRadius={2} width="550px" borderColor="gray.400" border={"1px solid"}>.</Flex>
+      <Flex bg="yellow" borderRadius={2} width="100px" borderColor="gray.400" border={"1px solid"}>.</Flex>
     </HStack>
   )
 }
