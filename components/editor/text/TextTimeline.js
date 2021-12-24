@@ -1,6 +1,6 @@
 import { Box, Container, Flex, Icon, Text, Spacer, HStack } from '@chakra-ui/react'
 import { useState, useEffect, useContext } from 'react'
-import { AppContext } from '../../../pages/main/index'
+import { AppContext } from '../../../pages/index'
 import transcript from '../../../transcript'
 
 

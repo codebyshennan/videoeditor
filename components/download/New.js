@@ -18,7 +18,6 @@ import {
 
 const New = () => {
   const { toggleColorMode } = useColorMode();
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.50');
   const secondaryTextColor = useColorModeValue('gray.600', 'gray.400');
   return (
     <VStack
@@ -27,7 +26,6 @@ const New = () => {
       p={10}
       spacing={6}
       align="flex-start"
-      bg={bgColor}
     >
       <VStack alignItems="flex-start" spacing={3}>
         <Heading size="2xl">Optimized Video</Heading>
@@ -38,26 +36,11 @@ const New = () => {
               boxShadow={'2xl'}
               rounded={'md'}
               overflow={'hidden'}>
-              <Image
-                h={'120px'}
-                w={'full'}
-                src={
-                  'https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
-                }
-                objectFit={'cover'}
-              />
-              <Flex justify={'center'} mt={-12}>
-                <Avatar
-                  size={'xl'}
-                  src={
-                    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ'
-                  }
-                  alt={'Author'}
-                  css={{
-                    border: '2px solid white',
-                  }}
-                />
-              </Flex>
+
+              <AspectRatio
+                ratio={16/9}>
+                  <video></video>
+              </AspectRatio>
 
               <Box p={6}>
                 <Stack spacing={0} align={'center'} mb={5}>

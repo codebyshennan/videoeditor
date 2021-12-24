@@ -32,12 +32,6 @@ export const buildConcatList = async (ffmpeg, clipNames, fileExt) => {
   return FILENAME;
 };
 
-export const changeSpeedOfClip = (ffmpeg, duration) => {
-  // ffmpeg -i input.mkv -filter_complex "[0:v]setpts=<1/x>*PTS[v];[0:a]atempo=<x>[a]" -map "[v]" -map "[a]" output.mkv
-  //create new file
-  //unlink original file
-  //create rename temp file to original name
-};
 export const changeDurationOfPauses = async (
   ffmpeg,
   duration,
@@ -67,8 +61,8 @@ export const changeDurationOfPauses = async (
     );
     clip.filename = newName;
 
-      const allFiles = ffmpeg.FS('readdir', '/'); //: list files inside specific path
-      console.log('allFiles :>> ', allFiles);
+    const allFiles = ffmpeg.FS('readdir', '/'); //: list files inside specific path
+    console.log('allFiles :>> ', allFiles);
 
     await ffmpeg.FS('unlink', `${ogFilename}.${fileExt}`);
   }
@@ -83,6 +77,21 @@ export const concatFiles = async (ffmpeg, concatTxt, finalFileName) => {
     concatTxt,
     finalFileName
   );
+};
+export const removeAllFiles = async (ffmpeg) => {
+  let allFiles = ffmpeg.FS('readdir', '/'); //: list files inside specific path
+  console.log('allFiles :>> ', allFiles);
+
+  const re = /(?:\.([^.]+))?$/;
+  const fileExt = allFiles.map((filename) => re.exec(filename)[1]);
+
+  const files = allFiles.filter((filename, i) => fileExt[i] !== undefined);
+  console.log('files', files);
+  for (let i = 0; i < files.length; i += 1) {
+    await ffmpeg.FS('unlink', files[i]);
+  }
+  allFiles = ffmpeg.FS('readdir', '/'); //: list files inside specific path
+  console.log('allFiles :>> ', allFiles);
 };
 
 export const removeFiles = async (ffmpeg, filenames, fileExt) => {

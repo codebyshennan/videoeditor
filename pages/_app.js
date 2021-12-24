@@ -3,12 +3,19 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { UserContext } from '../components/context'
-import { useUserData } from '../components/hooks' 
+import { UserContext, ffmpegContext } from '../components/context'
+import { useUserData } from '../components/hooks'
+import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 import Theme from './theme'
 
+const ffmpeg = createFFmpeg({
+  corePath: '/ffmpeg-core/ffmpeg-core.js',
+  // log: true,
+  // logger: ({message})=> console.log(message),
+  // progress: (p) => console.log(p)
+});
 
-export default function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }) => {
   // const apolloClient = useApollo(pageProps.initialApolloState)
   const userData = useUserData()
   console.log('userData >> ', userData)
@@ -16,13 +23,17 @@ export default function App({ Component, pageProps }) {
   return (
     // <ApolloProvider client={apolloClient}>
       <ChakraProvider theme={Theme}>
-        <UserContext.Provider value={userData} >
-          <DndProvider backend={ HTML5Backend }>
-            <Component {...pageProps} />
-          </DndProvider>
-        </UserContext.Provider>
+        <ffmpegContext.Provider value={ffmpeg} >
+          <UserContext.Provider value={userData} >
+            <DndProvider backend={ HTML5Backend }>
+              <Component {...pageProps} />
+            </DndProvider>
+          </UserContext.Provider>
+        </ffmpegContext.Provider>
       </ChakraProvider>
     // </ApolloProvider>
   )
 }
+
+export default App
 

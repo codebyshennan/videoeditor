@@ -1,12 +1,12 @@
 import { useRef, useEffect, useContext, useState, forwardRef } from 'react'
-import { AppContext, FileContext } from '../../pages/main/index'
+import { AppContext, FileContext } from '../../pages/index'
 import { Flex, AspectRatio, Container } from '@chakra-ui/react'
 
 const VideoDisplay = ({ videoContainerRef }) => {
 
+  const { fileUploads, setFileUploads, videoStatus } = useContext(FileContext)
   const [ playerSource, setPlayerSource ] = useState(null)
   const { videoSettings } = useContext(AppContext)
-  const { fileUploads, setFileUploads } = useContext(FileContext)
   const ratio = useRef( 16/9 )
   // console.log(ratio.current)
 
@@ -17,17 +17,34 @@ const VideoDisplay = ({ videoContainerRef }) => {
     if(playerSource == null && fileUploads.length != 0) {
       const url = URL.createObjectURL(fileUploads[0])
       videoContainerRef.current.src = url
+      // setPlayerSource(url)
     } else {
       return
     }
 
   }, [fileUploads])
 
-  const setRatio = () => {
+
+  const handlePlay = (ev) => {
+    videoStatus.current = {
+      ...videoStatus.current,
+      currentTime: ev.target.currentTime,
+      seeking: ev.target.seeking,
+      pause: ev.target.pause,
+      error: ev.target.error
+    }
+  }
+
+  const setRatio = (ev) => {
     const vw = videoContainerRef.current.videoWidth
     const vh = videoContainerRef.current.videoHeight
     ratio.current = Math.round(vw / vh)
-    console.log(ratio.current)
+    
+    videoStatus.current = {
+      ...videoStatus.current,
+      duration: ev.target.duration,
+    }
+
   }
 
   const VideoInput = forwardRef((props, ref) => {
@@ -49,6 +66,7 @@ const VideoDisplay = ({ videoContainerRef }) => {
         <VideoInput ref={videoContainerRef}
           autoload = "metadata"
           onLoadedMetadata = { setRatio }
+          onTimeUpdate = { handlePlay }
           type="video/mp4" 
           src = { playerSource } />
       </AspectRatio>

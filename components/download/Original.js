@@ -9,7 +9,7 @@ import {
   Container,
   useBreakpointValue,
   useColorModeValue,
-  Image,
+  AspectRatio,
   Flex,
   Avatar,
   Stack,
@@ -20,9 +20,15 @@ const Original = () => {
   const colSpan = useBreakpointValue({ base: 2, md: 1 });
 
   return (
-    <VStack w="full" h="full" p={10} spacing={10} alignItems="flex-start">
+    <VStack 
+      w="full" 
+      h="full" 
+      p={10} 
+      spacing={10} 
+      alignItems="flex-start"
+    >
       <VStack spacing={3} alignItems="flex-start">
-        <Heading size="2xl">Your Original Video</Heading>
+        <Heading size="2xl"> Original Video</Heading>
         <Container>
             <Box
               w={'full'}
@@ -30,26 +36,11 @@ const Original = () => {
               boxShadow={'2xl'}
               rounded={'md'}
               overflow={'hidden'}>
-              <Image
-                h={'120px'}
-                w={'full'}
-                src={
-                  'https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
-                }
-                objectFit={'cover'}
-              />
-              <Flex justify={'center'} mt={-12}>
-                <Avatar
-                  size={'xl'}
-                  src={
-                    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ'
-                  }
-                  alt={'Author'}
-                  css={{
-                    border: '2px solid white',
-                  }}
-                />
-              </Flex>
+
+              <AspectRatio
+                ratio={16/9}>
+                <video></video>
+              </AspectRatio>
 
               <Box p={6}>
                 <Stack spacing={0} align={'center'} mb={5}>

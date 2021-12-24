@@ -1,4 +1,4 @@
-import { AppContext } from "../../../pages/main"
+import { AppContext } from "../../../pages/index"
 import { useContext } from "react"
 import { Icon, Flex, Button } from '@chakra-ui/react'
 import { FaAudioDescription, FaFileAudio, FaFileWord, FaLongArrowAltUp } from "react-icons/fa"

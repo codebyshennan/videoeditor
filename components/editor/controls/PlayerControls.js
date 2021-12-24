@@ -6,7 +6,7 @@ import { useContext, useState } from 'react'
 import { MdOutlinePanTool } from "react-icons/md"
 import { SiSpeedtest } from 'react-icons/si'
 import { useDisclosure } from "@chakra-ui/react"
-import { AppContext } from "../../../pages/main"
+import { AppContext } from "../../../pages/index"
 import { useColorMode, useColorModeValue } from '@chakra-ui/react'
 
 const PlayerControls = ({ videoContainerRef }) => {

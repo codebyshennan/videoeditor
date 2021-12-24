@@ -1,7 +1,7 @@
 
 import { useCallback, useMemo, useRef, useContext } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { AppContext, FileContext } from '../../pages/main';
+import { AppContext, FileContext } from '../../pages/index';
 import FileCard from './FileCard'
 import { v4 as uuidv4} from 'uuid'
 import { useToast } from '@chakra-ui/react'

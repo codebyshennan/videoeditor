@@ -1,18 +1,16 @@
 import * as stage from './stage-constants';
+import * as ffmpegProcess from '../videoprocessing/ffmpegProcess';
 
 import { fetchFile } from '@ffmpeg/ffmpeg';
 
 import { uploadAudio } from './uploadAudioToCloud';
-
+import { v4 as uuidv4 } from 'uuid';
 //Testing function
 export const extractAudioClip = async (
   ffmpeg,
   video,
   FINALAUDIO,
-  setAudio,
-  audioUuid,
-  setProcessStage,
-  setProcessRatio,
+  setAudioUuid,
   timeStampAtStage
 ) => {
   try {
@@ -31,14 +29,20 @@ export const extractAudioClip = async (
 
     const audioBlob = new Blob([data.buffer], { type: 'audio/aac' });
     timeStampAtStage(stage.UPLOADING_AUDIO);
-    uploadAudio(audioBlob, audioUuid, setProcessRatio);
+    const audioUuid = uuidv4();
+    // TODO uncomment uploadAudio
+    // await uploadAudio(audioBlob, audioUuid);
     timeStampAtStage(stage.ANALYSING_AUDIO);
-    // set timer for analysis
-    //sent for transcription
-    const url = URL.createObjectURL(audioBlob);
+    //remove audio from mem
 
-    console.log('url :>> ', url);
-    setAudio(url);
+    await ffmpegProcess
+      .removeFiles(ffmpeg, [FINALAUDIO.split('.')[0]], 'aac')
+      .catch((e) => {
+        console.log('error in removing file', e);
+      });
+
+    // ffmpeg.exit();
+    setAudioUuid(audioUuid);
   } catch (error) {
     console.error(error);
   }

@@ -1,6 +1,6 @@
 import FileUpload from './FileUpload'
 import { Stack } from '@chakra-ui/react'
-import { AppContext } from '../../pages/main/index'
+import { AppContext } from '../../pages/index'
 import { useState, useRef, useContext, useEffect } from 'react'
 
 

@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react'
-import { AppContext } from '../../../pages/main/index'
+import { AppContext } from '../../../pages/index'
 import { useContext, useState, useRef, useEffect } from 'react'
 
 

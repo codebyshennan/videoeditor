@@ -5,7 +5,7 @@ import Scrubber from './editor/Scrubber'
 import ProgressBar from './editor/controls/ProgressBar'
 import { Box, Container, VStack, StackDivider, Grid, Flex, HStack } from '@chakra-ui/react'
 import { useRef, useEffect, useState, useContext, createContext, useCallback } from 'react'
-import { AppContext } from '../pages/main'
+import { AppContext } from '../pages/index'
 import Timeline from './editor/Timeline'
 import TimelineButtons from './editor/TimelineButtons'
 import FileOptions from './editor/controls/FileOptions'
@@ -72,7 +72,7 @@ const Editor = () => {
       >
 
         <Box borderWidth="0" boxShadow="md" rounded="md" gridArea="sidebar">
-          <SidePanel/>
+          <SidePanel />
         </Box>
 
         <Flex borderWidth="0" boxShadow="md" rounded="md" gridArea="options">
@@ -96,8 +96,8 @@ const Editor = () => {
               direction="row"
             >
               <TimelineButtons />
-              <Scrubber />
-              <Timeline />
+              <Scrubber videoContainerRef={videoContainerRef}/>
+              <Timeline videoContainerRef={videoContainerRef}/>
             </Flex>
           </Flex>
         </TimelineContext.Provider>

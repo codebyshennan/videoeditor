@@ -38,3 +38,4 @@ yarn-error.log*
 gcloud_STT.json
 
 # firebase API
+firebaseadmin.json

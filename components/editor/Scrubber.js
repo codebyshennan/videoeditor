@@ -2,11 +2,15 @@ import { useState, useContext, useRef, useEffect } from 'react'
 import Draggable from 'react-draggable'
 import { Box, Container, Flex, } from '@chakra-ui/react'
 import { TimelineContext } from '../Editor'
+import { FileContext } from '../../pages/index'
 
-const Scrubber = () => {
+
+const Scrubber = ({ videoContainerRef }) => {
+  
   const frameLocation = useRef()
   const time = useRef()
-  const { timelineDimensions, setTimelineDimensions } = useContext(TimelineContext) 
+  const { timelineDimensions, setTimelineDimensions } = useContext(TimelineContext)
+  const { fileUploads, setFileUploads, videoStatus } = useContext(FileContext)
 
   const [ scrubPosition, setScrubPosition ] = useState(0)
   const [ ratio, setRatio ] = useState(0)
@@ -25,6 +29,10 @@ const Scrubber = () => {
     let ratio = ( mousePos / boxWidth ) * 100
     setScrubPosition(ratio)
   }
+
+  // useEffect(()=> {
+
+  // })
 
 
   return (
