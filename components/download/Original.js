@@ -1,23 +1,18 @@
-import {
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-  Heading,
-  Box,
-  Button,
-  Container,
-  useBreakpointValue,
-  useColorModeValue,
-  AspectRatio,
-  Flex,
-  Avatar,
-  Stack,
-  Text
-} from '@chakra-ui/react';
+import { FormControl,  FormLabel,  Input,  VStack,  Heading,  Box,  Button,  Container,  useBreakpointValue,  useColorModeValue,  AspectRatio,  Flex,  Avatar,  Stack,  Text } from '@chakra-ui/react';
+import { FileContext } from '../context'
+import { useContext, useState } from 'react'
 
 const Original = () => {
+  //add dropzone
+
+  const { uploadedVideo, setUploadedVideo, videoStatusRef } = useContext(FileContext)
+
+  
+
   const colSpan = useBreakpointValue({ base: 2, md: 1 });
+  const onBrowseBtnClick = () => {
+    inputFile.current.click();
+  };
 
   return (
     <VStack 
@@ -30,44 +25,28 @@ const Original = () => {
       <VStack spacing={3} alignItems="flex-start">
         <Heading size="2xl"> Original Video</Heading>
         <Container>
-            <Box
-              w={'full'}
-              bg={useColorModeValue('white', 'gray.800')}
-              boxShadow={'2xl'}
-              rounded={'md'}
-              overflow={'hidden'}>
-
+          <Box
+            w={'full'}
+            bg={useColorModeValue('white', 'gray.800')}
+            boxShadow={'2xl'}
+            rounded={'md'}
+            overflow={'hidden'}
+            onClick = { onBrowseButtonClick }
+            >
+            
+            { uploadedVideo && 
               <AspectRatio
                 ratio={16/9}>
-                <video></video>
+                <video
+                  controls
+                  src={URL.createObjectURL(uploadedVideo)}
+                ></video>
               </AspectRatio>
+            }
 
-              <Box p={6}>
-                <Stack spacing={0} align={'center'} mb={5}>
-                  <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
-                    John Doe
-                  </Heading>
-                  <Text color={'gray.500'}>johndoe@doeraemi.com</Text>
-                </Stack>
-
-                <Stack direction={'row'} justify={'center'} spacing={6}>
-                  <Stack spacing={0} align={'center'}>
-                    <Text fontWeight={600}>3</Text>
-                    <Text fontSize={'sm'} color={'gray.500'}>
-                      Videos Optimized
-                    </Text>
-                  </Stack>
-                  <Stack spacing={0} align={'center'}>
-                    <Text fontWeight={600}>142</Text>
-                    <Text fontSize={'sm'} color={'gray.500'}>
-                      Minutes Optimized
-                    </Text>
-                  </Stack>
-                </Stack>
-              </Box>
-            </Box>
-          </Container>
-        </VStack>
+          </Box>
+        </Container>
+      </VStack>
     </VStack>
   );
 };

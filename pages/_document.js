@@ -8,7 +8,11 @@ class Document extends NextDocument {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          <title> SuccinctCut </title>
+          <meta name="description" content="Make your videos succinct" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
         <body>
           <ColorModeScript initialColorMode={Theme.config.initialColorMode} />
           <Main />

@@ -1,18 +1,28 @@
 import { Flex, Container } from '@chakra-ui/react';
-import New from './New';
-import Old from './Original';
+import Optimized from './Optimized';
+import Original from './Original';
+import TranscriptStatusBar from './TranscriptStatusBar';
+import ProcessingControls from './ProcessingControls'
+import { useEffect, useContext } from 'react'
 
-const Download = () => (
-  <Container maxW="container.xl" p={0}>
-    <Flex
-      h={{ base: 'auto', md: '90vh' }}
-      py={[0, 10, 20]}
-      direction={{ base: 'column-reverse', md: 'row' }}
-    >
-      <Old />
-      <New />
-    </Flex>
-  </Container>
-);
+
+const Download = () => {
+
+  return (
+    <Container maxW="container.xl" p={0}>
+      <Flex
+        h={{ base: 'auto', md: '90vh' }}
+        py={[0, 10, 20]}
+        direction={{ base: 'column-reverse', md: 'row' }}
+      >
+        <Original />
+        <Optimized />
+        <TranscriptStatusBar />
+        <ProcessingControls />
+        <ProgressBar />
+      </Flex>
+    </Container>
+  )
+};
 
 export default Download;

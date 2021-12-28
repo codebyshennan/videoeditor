@@ -1,24 +1,17 @@
-import {
-  Heading,
-  HStack,
-  VStack,
-  Image,
-  AspectRatio,
-  Text,
-  Divider,
-  Stack,
-  Button,
-  useColorMode,
-  useColorModeValue,
-  Container,
-  Box,
-  Flex,
-  Avatar
-} from '@chakra-ui/react';
+import { Heading, VStack, Image, AspectRatio, Text, Divider, Stack, useColorMode
+  Button, Container, Box, Flex, } from '@chakra-ui/react';
+import { useContext } from 'react'
+import { FileContext } from '../../pages/index'
 
-const New = () => {
-  const { toggleColorMode } = useColorMode();
-  const secondaryTextColor = useColorModeValue('gray.600', 'gray.400');
+const Optimized = () => {\
+  
+  const { uploadedVideo, setUploadedVideo, videoStatusRef } = useContext(FileContext)
+
+  const onDownloadClick = () => {
+    downloadAnchor.current.click();
+  };
+
+
   return (
     <VStack
       w="full"
@@ -35,7 +28,8 @@ const New = () => {
               bg={useColorModeValue('white', 'gray.800')}
               boxShadow={'2xl'}
               rounded={'md'}
-              overflow={'hidden'}>
+              overflow={'hidden'}
+              onClick = {onDownloadClick}>
 
               <AspectRatio
                 ratio={16/9}>
@@ -72,4 +66,4 @@ const New = () => {
   );
 };
 
-export default New;
+export default Optimized;

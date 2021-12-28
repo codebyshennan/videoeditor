@@ -16,7 +16,6 @@ export const parseTranscript = (
   setOptimizedList,
   remainingPercentage,
   setRemainingPercentage
-  
   ) => {
 
     const transcriptDuration = transcripts[transcripts.length - 1].endTime
