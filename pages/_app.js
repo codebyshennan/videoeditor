@@ -8,13 +8,10 @@ import { useUserData } from '../components/hooks/hooks'
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 import Theme from './theme'
 import Footer from '../components/Footer'
-import { useState, useRef, useContext } from 'react'
+import { useState, useRef } from 'react'
 import { flattenedTranscript } from '../refTranscriptData/cxTranscripts1min'
-import { cleanClip } from '../components/clip-handlers/cleanClip';
-import { extractAudioClip } from '../components/clip-handlers/extractAudioClip';
 import * as stage from '../components/clip-handlers/stage-constants';
 import NORMS from '../components/norms'
-import * as ffmpegProcess from '../components/videoprocessing/ffmpegProcess';
 
 const ffmpeg = createFFmpeg({
   corePath: '/ffmpeg-core/ffmpeg-core.js',
@@ -23,13 +20,16 @@ const ffmpeg = createFFmpeg({
   // progress: (p) => console.log(p)
 });
 
+export const FINALAUDIO = 'finalAudio.aac';
+export const PROCESSEDAUDIOFN = 'finalcut.mp4';
+
 const App = ({ Component, pageProps }) => {
   // const apolloClient = useApollo(pageProps.initialApolloState)
 
   // ======== AUTH & USER SETTINGS ========
   const userData = useUserData()
 
-  // ======== FFMPEG & VIDEO SETTINGS ========
+  // ======== FFMPEG/VIDEO&AUDIO SETTINGS ========
   const videoSettingsRef = useRef()
   const videoStatusRef = useRef()
   const ffmpegRatio = useRef(0);
@@ -61,8 +61,10 @@ const App = ({ Component, pageProps }) => {
         transcription: []
       }
 
-  const [ ffmpegReady, setffmpegReady ] = useState(false);
-  const [ uploadedVideo, setUploadedVideo ] = useState();
+  const [ ffmpegReady, setffmpegReady ] = useState(false)
+  const [ uploadedVideo, setUploadedVideo ] = useState()
+  const [ strippedAudio, setStrippedAudio ] = useState()
+  const [ audioWaveForm, setAudioWaveform ] = useState()
   const [ audioUuid, setAudioUuid ] = useState();
   
   // ======== PROCESSING STATES ========
@@ -72,7 +74,6 @@ const App = ({ Component, pageProps }) => {
   const [ timeTaken, setTimeTaken ] = useState([])
   const [ audioAnalysisBegan, setAudioAnalysisBegan ] = useState(false)
 
-
   // ======== TRANSCRIPTION STATES ========
   const [ transcription, setTranscription ] = useState()
   const [ mergedTranscript, setMergedTranscript] = useState();
@@ -80,24 +81,16 @@ const App = ({ Component, pageProps }) => {
   const [ transcriptList, setTranscriptList] = useState()
   const [ optimizedList, setOptimizedList ] = useState()
   const [ remainingPercentage, setRemainingPercentage] = useState(100)
+  const [ transcriptDuration, setTranscriptDuration ] = useState()
 
   export const timeStampAtStage = (stage) => {
     const currTime = Math.round(+new Date());
     // can be combined
-    timeTaken.push(currTime);
-    processStage.push(stage);
-    setTimeTaken(timeTaken);
-    setProcessStage(processStage);
-    setProgress(progress + +NORMS[stage])
-  };
-
-  
-  const calcTimeTakenPerStage = () => {
-    const durations = [];
-    for (let i = 1; i < timeTaken.length; i += 1) {
-      durations.push(timeTaken[i] - timeTaken[i - 1]);
-    }
-    return durations;
+    let combinedTime = [...timeTaken].push(currTime);
+    let combinedStage = [...processStage].push(stage);
+    setTimeTaken(combinedTime);
+    setProcessStage(combinedStage);
+    setProgress(progress => progress + +NORMS[stage])
   };
 
   // initialize ffmpeg
@@ -111,15 +104,34 @@ const App = ({ Component, pageProps }) => {
           ffmpegRatio.current = p.ratio;
         });
       } catch (e) {
-        console.log('error loading ffmpeg', e);
+        console.error('Error loading ffmpeg', e);
         location.reload();
       }
     } else {
       console.log('ffmpeg loaded');
       setffmpegReady(true);
     }
-  }, []); // only called once
+  }, []);
 
+  // get audio waveform
+  useEffect( async ()=> {
+    if(ffmpegReady) { 
+      ffmpeg.FS("writeFile", `${strippedAudio}`, await fetchFile(strippedAudio))
+      await ffmpeg.run('-i', `${strippedAudio}`, '-filter_complex', 'showwavespic=s=640x120', '-frames:v', '1', 'waveform.png')
+      
+      const allFiles = ffmpeg.FS('readdir','/') //list files inside specific path
+      // console.log('All Files >>', allFiles)
+      const data = ffmpeg.FS('readfile', 'waveform.png')
+
+      const waveFormBlob = new Blob([data.buffer], { type: 'image/png'})
+      const waveFormUrl = URL.createObjectURL(waveFormBlob)
+      // let waveform = document.createElement('img')
+      // let canvas = document.createElement('canvas').getContext('2d')
+      // canvas.drawImage(waveform, 0, 0)
+      setAudioWaveform(waveFormUrl)
+    }
+
+  }, [ strippedAudio ])
 
   useEffect(() => {
     //check auth for user
@@ -130,10 +142,17 @@ const App = ({ Component, pageProps }) => {
       const unsub = onSnapshot(
         doc(firestore, 'users', userUid, 'transcript', audioUuid),
         (doc) => {
-          if (doc.data() !== undefined && 'response' in doc.data()) {
+          if (doc.data() !== undefined && 'response' in doc.data()) {merg
             console.log('currentdata:', JSON.parse(doc.data().response));
-            setTranscription(JSON.parse(doc.data().response).result);
+            const { result } = JSON.parse(doc.data().response);
+            setTranscription(result);
             timeStampAtStage(stage.ANALYSED_AUDIO);
+            const { results } = result;
+            const lastResult = results[results.length - 1];
+            const lastResultTimeStamps = lastResult.alternatives[0].timestamps;
+            const lastTime =
+              lastResultTimeStamps[lastResultTimeStamps.length - 1][2];
+            setTranscriptDuration(lastTime);
           }
         }
       );
@@ -154,14 +173,18 @@ const App = ({ Component, pageProps }) => {
           <ffmpegContext.Provider 
             value = {{ 
               ffmpeg, 
-              ffmpegReady, setffmpegReady, 
+              ffmpegReady, setffmpegReady,
+              audioWaveForm, setAudioWaveform,
               audioUuid, setAudioUuid 
             }} 
           >
             <AppContext.Provider 
               value = {{ videoSettingsRef }}>
               <FileContext.Provider 
-                value = {{ uploadedVideo, setUploadedVideo, videoStatusRef }}>
+                value = {{ videoStatusRef, 
+                  uploadedVideo, setUploadedVideo, 
+                  strippedAudio, setStrippedAudio
+                  }}>
                 <ProcessingContext.Provider 
                   value= {{ 
                     cleanedClip, setCleanedClip, 
@@ -174,6 +197,7 @@ const App = ({ Component, pageProps }) => {
                       transcription, setTranscription,
                       mergedTranscript, setMergedTranscript,
                       cleanedTranscript, setCleanedTranscript,
+                      transcriptDuration, setTranscriptDuration,
                       transcriptList, setTranscriptList,
                       optimizedList, setOptimizedList,
                       remainingPercentage, setRemainingPercentage

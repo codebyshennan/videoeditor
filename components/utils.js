@@ -4,6 +4,7 @@ export const fileSizeInMb = (file) => {
     const fileSize = (file.size / (1024 * 1024)).toFixed(4);
     return fileSize;
   };
+
 export const getFileExtension = (file) => {
     const re = /(?:\.([^.]+))?$/;
     const fileExt = re.exec(file.name)[1];
@@ -15,10 +16,13 @@ export const parseTranscript = (
   setTranscriptList,
   setOptimizedList,
   remainingPercentage,
-  setRemainingPercentage
+  setRemainingPercentage,
+  setTranscriptDuration
   ) => {
 
     const transcriptDuration = transcripts[transcripts.length - 1].endTime
+    setTranscriptDuration(transcriptDuration);
+
     const colorMap = {
       "WORD": 'green',
       "%PAUSE": 'yellow',
@@ -142,3 +146,10 @@ export const parseTranscript = (
     setOptimizedList(oList)
   }
 
+export const calcTimeTakenPerStage = (timeTaken) => {
+  const durations = [];
+  for (let i = 1; i < timeTaken.length; i += 1) {
+    durations.push(timeTaken[i] - timeTaken[i - 1]);
+  }
+  return durations;
+};

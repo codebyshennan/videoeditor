@@ -5,63 +5,35 @@ import { AppContext, FileContext } from '../../pages/index';
 import FileCard from './FileCard'
 import { v4 as uuidv4} from 'uuid'
 import { useToast } from '@chakra-ui/react'
-
-import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
-import { cleanClip } from '../clip-handlers/cleanClip';
-import { extractAudioClip } from '../clip-handlers/extractAudioClip';
-import { optimiseAudioClip } from '../clip-handlers/optimiseAudioClip';
-
-// import { Loader } from '../Loader';
-
-// ============FIREBASE=============
-import {
-  getFirestore,
-  connectFirestoreEmulator,
-  doc,
-  deleteDoc,
-  onSnapshot,
-  query,
-  where,
-  getDocs,
-  collection,
-} from 'firebase/firestore';
-
-// import { firestore, auth } from '../firebase'
-
-const baseStyle = {
-  flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: '20px',
-  borderWidth: 2,
-  borderRadius: 2,
-  borderColor: '#eeeeee',
-  borderStyle: 'dashed',
-  backgroundColor: '#fafafa',
-  color: '#bdbdbd',
-  outline: 'none',
-  transition: 'border .24s ease-in-out'
-};
-
-const activeStyle = {
-  borderColor: '#2196f3'
-};
-
-const acceptStyle = {
-  borderColor: '#00e676'
-};
-
-const rejectStyle = {
-  borderColor: '#ff1744'
-};
+import { fileSizeInMb, getFileExtension } from '../utils';
 
 
-
-const ffmpeg = createFFmpeg({
-  corePath:'/ffmpeg-core/ffmpeg-core.js',
-  log: true
-})
+const styles = {
+  baseStyle : {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '20px',
+    borderWidth: 2,
+    borderRadius: 2,
+    borderColor: '#eeeeee',
+    borderStyle: 'dashed',
+    backgroundColor: '#fafafa',
+    color: '#bdbdbd',
+    outline: 'none',
+    transition: 'border .24s ease-in-out'
+  }, 
+  activeStyle : {
+    borderColor: '#2196f3'
+  },
+  acceptStyle : {
+    borderColor: '#00e676'
+  },
+  rejectStyle : {
+    borderColor: '#ff1744'
+  }
+}
 
 const FileUpload = () => {
   const toast = useToast()
@@ -69,28 +41,10 @@ const FileUpload = () => {
   const { videoSettings } = useContext(AppContext)
   const thumbnailContainer = useRef()
   const waveFormContainer = useRef()
-  const ffmpegRatio = useRef()
   // let user = auth.currentUser
   const AUDIOFILENAME = 'test.aac';
   const FINALAUDIO = 'finalAudio.aac';
   const PROCESSEDAUDIOFN = 'finalcut.mp4';
-
-  const getWaveForm = async(file) => {
-    await ffmpeg.load()
-    ffmpeg.FS("writeFile", `${file}`, await fetchFile(file))
-    await ffmpeg.run('-i', `${file}`, '-filter_complex', 'showwavespic=s=640x120', '-frames:v', '1', 'waveform.png')
-    
-    const allFiles = ffmpeg.FS('readdir','/') //list files inside specific path
-    console.log('All Files >>', allFiles)
-    const data = ffmpeg.FS('readfile', 'waveform.png')
-
-    const waveFormBlob = new Blob([data.buffer], { type: 'image/png'})
-    let waveform = document.createElement('img')
-    let canvas = document.createElement('canvas').getContext('2d')
-    canvas.drawImage(waveform, 0, 0)
-    waveform.src = URL.createObjectURL(waveFormBlob)
-    waveFormContainer.current.appendChild(waveform)
-  }
 
   // callback is just to get a snapshot of the video file
   const onDrop = useCallback( acceptedFiles => {
@@ -117,7 +71,6 @@ const FileUpload = () => {
         let videoBlob = new Blob([reader.result], { type: file.type })
         let url = URL.createObjectURL(videoBlob)
       
-
         // save video settings upon reading
         videoSettings.current = {
           ...videoSettings.current,
@@ -176,90 +129,31 @@ const FileUpload = () => {
       reader.readAsArrayBuffer(file)
       setFileUploads([...fileUploads, file])
 
-      try {
-        getWaveForm()
-      } catch (e) {
-        console.log(e)
-      }
     })
   }, [])
   
-
-  const timeStampAtStage = (stage) => {
-    const currTime = Math.round(+ new Date())
-    // can be combined
-    videoSettings.current = {
-      ...videoSettings.current,
-      timeTaken: [...videoSettings.current.timeTaken, currTime],
-      processStage: [...videoSettings.current.processStage, stage]
-    }
-  }
-
-  const load = async () => {
-    if(!ffmpeg.isLoaded()) {
-      console.log('ffmpeg was not loaded')
-      try {
-        await ffmpeg.load().then(()=> {
-          setVideoSettings({
-            ...videoSettings,
-            ffmpegReady: true
-          })
-        })
-
-        await ffmpeg.setProgress(p => {
-          console.log(ratio, 'p')
-          ffmpegRatio.current = p.ratio
-        })
-      } catch (e) {
-        console.log("error loading ffmpeg", e)
-        location.reload()
-      }
-    } else {
-      console.log('ffmpeg loaded')
-      videoSettings.current = {
-        ...videoSettings.current,
-        ffmpegReady: true
+  const fileValidator = (file)=> {
+    const fileSize = fileSizeInMb(file)
+    if(fileSize > 100 && getFileExtension(file) !== 'mp4'){
+      toast({
+              position: 'top',
+              title: 'File Limit Exceeded.',
+              description: `${file.name} of ${fileSize}MB exceeds the 100MB limit.`,
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+            })
       }
     }
   }
-  
-  // useEffect(()=> {
-  //   // check auth fr user
-  //   if (user != null && videoSettings.audioUuid !== null) {
-  //     const userUid = user.uid
-  //     console.log('userUid', userUid)
 
-  //     // listen for transcript
-  //     const unsub = onSnapshot(
-  //       doc(firestore, 'users', userUid, 'transcript', videoSettings.audioUuid),
-  //       (doc) => {
-  //         if(doc.data() != undefined && 'response' in doc.data()) {
-  //           console.log('current data:', JSON.parse(doc.data().response))
-  //           setVideoSettings({
-  //             transcription: JSON.parse(doc.data().response).result
-  //           })
-  //         }
-  //       }
-  //     )
-
-  //     // deleting transcription takes time
-  //     const deleteStatus = deleteDoc(
-  //       doc(firestore, 'users', userUid, 'transcript', videoSettings.audioUuid)
-  //     )
-  //     timeStampAtStage(stage.ANALYSED_AUDIO)
-  //   } else {
-  //     console.log('no user logged in, kindly log in')
-  //   }
-  // }, [videoSettings.audio])
-
-
-  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone( { onDrop } )
+  const { fileRejections, getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone( { onDrop, accept: '.mp4', validator: fileValidator } )
 
   const style = useMemo(() => ({
-    ...baseStyle,
-    ...(isDragActive ? activeStyle : {}),
-    ...(isDragAccept ? acceptStyle : {}),
-    ...(isDragReject ? rejectStyle : {})
+    ...styles.baseStyle,
+    ...(isDragActive ? styles.activeStyle : {}),
+    ...(isDragAccept ? styles.acceptStyle : {}),
+    ...(isDragReject ? styles.rejectStyle : {})
   }), [
     isDragActive,
     isDragReject,

@@ -11,7 +11,8 @@ export const extractAudioClip = async (
   video,
   FINALAUDIO,
   setAudioUuid,
-  timeStampAtStage
+  timeStampAtStage,
+  setStrippedAudio
 ) => {
   try {
     timeStampAtStage(stage.LOADING_VIDEO);
@@ -28,10 +29,12 @@ export const extractAudioClip = async (
     console.log('data :>> ', data);
 
     const audioBlob = new Blob([data.buffer], { type: 'audio/aac' });
+    const audioURL = URL.createObjectURL(audioBlob)
+    setStrippedAudio(audioURL)
     timeStampAtStage(stage.UPLOADING_AUDIO);
     const audioUuid = uuidv4();
     // TODO uncomment uploadAudio
-    // await uploadAudio(audioBlob, audioUuid);
+    await uploadAudio(audioBlob, audioUuid);
     timeStampAtStage(stage.ANALYSING_AUDIO);
     //remove audio from mem
 
