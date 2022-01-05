@@ -22,6 +22,7 @@ const ffmpeg = createFFmpeg({
 
 export const FINALAUDIO = 'finalAudio.aac';
 export const PROCESSEDAUDIOFN = 'finalcut.mp4';
+export const WAVEFORM = 'waveform.png'
 
 const App = ({ Component, pageProps }) => {
   // const apolloClient = useApollo(pageProps.initialApolloState)
@@ -116,19 +117,20 @@ const App = ({ Component, pageProps }) => {
   // get audio waveform
   useEffect( async ()=> {
     if(ffmpegReady) { 
-      ffmpeg.FS("writeFile", `${strippedAudio}`, await fetchFile(strippedAudio))
-      await ffmpeg.run('-i', `${strippedAudio}`, '-filter_complex', 'showwavespic=s=640x120', '-frames:v', '1', 'waveform.png')
-      
-      const allFiles = ffmpeg.FS('readdir','/') //list files inside specific path
-      // console.log('All Files >>', allFiles)
-      const data = ffmpeg.FS('readfile', 'waveform.png')
+      ffmpeg.FS("writeFile", `${strippedAudio.name}`, await fetchFile(strippedAudio))
+      await ffmpeg.run('-i', `${strippedAudio.name}`, '-filter_complex', 'showwavespic=s=640x120', '-frames:v', '1', WAVEFORM)
+  
+      const data = ffmpeg.FS('readfile', WAVEFORM)
 
       const waveFormBlob = new Blob([data.buffer], { type: 'image/png'})
       const waveFormUrl = URL.createObjectURL(waveFormBlob)
-      // let waveform = document.createElement('img')
-      // let canvas = document.createElement('canvas').getContext('2d')
-      // canvas.drawImage(waveform, 0, 0)
       setAudioWaveform(waveFormUrl)
+
+      await ffmpegProcessd
+        .removeFiles(ffmpeg, [WAVEFORM.split('.')[0]], 'png')
+        .catch((e) => {
+          console.error('error in removing file', e);
+      });
     }
 
   }, [ strippedAudio ])

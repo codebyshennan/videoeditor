@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect} from 'react'
 import { Box, Tooltip, HStack } from '@chakra-ui/react'
+import ExtractAudioBtn from '../controls/ExtractAudioBtn'
+import OptimizeBtn from '../controls/OptimizeBtn'
 
 const ProcessingControls = () => {
   
@@ -12,44 +14,8 @@ const ProcessingControls = () => {
         Browse ...
       </Button>
 
-      <Button
-        variant="ghost"
-        onClick={() => {
-          extractAudioClip(
-            ffmpeg,
-            video,
-            FINALAUDIO,
-            setAudioUuid,
-            timeStampAtStage
-          );
-          // setProcessStage([]);
-          setTimeTaken([]);
-          setAudioAnalysisBegan(true);
-        }}
-        isDisabled={!video || processStage.length > 0}
-      >
-        Analyse Video
-      </Button>
-
-      <Button
-        variant="ghost"
-        onClick={() => {
-          cleanClip(
-            transcription,
-            ffmpeg,
-            video,
-            PROCESSEDAUDIOFN,
-            setCleanedClip,
-            timeStampAtStage,
-            setMergedTranscript,
-            setCleanedTranscript,
-            setTranscriptDuration
-          );
-        }}
-        isDisabled={ (processStage.length < 6) || (!transcription && !video) }
-      >
-        Clean Video
-      </Button>
+      <ExtractAudioBtn />
+      <OptimizeBtn />
 
       <Button
         variant="ghost"
