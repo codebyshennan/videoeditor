@@ -1,74 +1,20 @@
 <div id="top"></div>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
 
+# Succinct Cut 🎥🧹✂
 
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
-
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-<h3 align="center">project_title</h3>
-
-  <p align="center">
-    project_description
-    <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
-  </p>
-</div>
-
-
+##### Succinct cut is a video cleaning service for unscripted video content. 
 
 <!-- TABLE OF CONTENTS -->
+
 <details>
   <summary>Table of Contents</summary>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#usage-steps">Usage Steps</a></li>
+    <li><a href="#built-with">Built With</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -77,94 +23,120 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![succinct cut final screenshot](/images/6_sc.png)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description`
+
+
+Unedited videos are full of verbal disfluencies  ("huh", "uh", "erm", "um") and long pauses when the speaker is thinking of what to say. Editing such videos manually is tedious and time consuming.
+
+##### Succinct cut will
+
+- Removes glaring disfluencies and hesitations.
+- Reduce the duration of pauses without cuts.
+- Return you a final cut that is cleaner and shorter than the original mp4 video upload.
+
+##### In exchange for
+
+- Some of your computer's CPU processing resources
+- Time
+
+You can find the deployed app [here](http://cutcut-sigma.vercel.app/)
+
+##### Performance on i5-8600 CPU desktop computer
+
+| Video size/mb | Video duration/min | Final Video Duration/min | Time taken for audio analysis/min | Time Taken for video editing/min |
+| ------------- | ------------------ | ------------------------ | --------------------------------- | -------------------------------- |
+| 21            | 1.04               | 0.53                     | 0.4                               | 11                               |
+| 130           | 6.44               | 5.04                     | 3.53                              | 73                               |
+
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+## Usage Steps
 
+1. __Sign-in with Google__
+2. __Browse__ to upload a .mp4 video ( max size: 100mb )
+3. __Analyze Video__ to start video analysis.
+4. __Clean__ __Video__ when progress bar reaches 50% to start video processing. 
+   *Colored bars will appear below the video to indicate the type of speech (speech, hesitation, pauses) that occurred in the video's timeframe. 
+   The bar on the right visualises the cleaned state without hesitations and long pauses.*
+5. __Download__ when progress bar reaches 100%
 
-### Built With
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## Built With
+
+##### Frontend
 
 * [Next.js](https://nextjs.org/)
 * [React.js](https://reactjs.org/)
-* [Vue.js](https://vuejs.org/)
-* [Angular](https://angular.io/)
-* [Svelte](https://svelte.dev/)
-* [Laravel](https://laravel.com)
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
+
+##### Backend. Authentication, database, storage, functions
+
+* [Firebase Auth](https://firebase.google.com/docs/auth)
+* [Cloud Firestore](https://firebase.google.com/docs/firestore)
+* [Cloud Storage](https://firebase.google.com/docs/storage)
+* [Cloud Functions](https://firebase.google.com/docs/functions)
+
+##### Video/audio analysis to get speeech, disfluencies, and pauses
+
+- [IBM Watson Speech-to-Text](https://www.ibm.com/sg-en/cloud/watson-speech-to-text)
+
+##### Video conversion, cutting, and editing in the browser
+
+- [Ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm)
+- [Ffmpeg](https://www.ffmpeg.org/)
+
+##### Styling
+
+- [chakra-ui](https://chakra-ui.com/)
+
+##### Planning
+
+- [notion](https://wongshennan.notion.site/Video-Editor-Transcription-2877c4a64f5b46fdaace8af30a474a5d)
+
+
+
+[frontend repo](https://github.com/Ennnm/succinct-cut)
+
+[backend repo](https://github.com/Ennnm/succinct-cut-cloudfunc)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+### Pipeline
 
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/github_username/repo_name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+![flowchart](/images/pipeline_mermaid.JPG)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- ROADMAP -->
+
 ## Roadmap
 
-- [] Feature 1
-- [] Feature 2
-- [] Feature 3
-    - [] Nested Feature
+- [] Fix login bugs
+- [] Nicer login ui
+- [] Port from nextjs + firebase to heroku
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+##### Issues
+
+- Vercel deployment has a timeout of 15s.
+
+- NextJS + Firebase sets a timeout on IBM watsons of 540s (current approach).
+
+  *A longer video will require a longer transcription time and this may be cut off prematurely.
+  While working with firebase databases and cloud functions have their advantages, porting over to express backend on heroku and using [IBM async API](https://cloud.ibm.com/apidocs/speech-to-text?code=node#registercallback) may remove this problem with fixed timeouts.*
+
+See the [open issues](https://github.com/ennnm/succinct_cut/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -183,6 +155,7 @@ Don't forget to give the project a star! Thanks again!
 
 
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
@@ -192,22 +165,21 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 
 <!-- CONTACT -->
+
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Jia En - [@ennnm_](https://twitter.com/ennnm_) - jiaen.1sc4@gmail.com
+Shen Nan - [@wongsn](https://twitter.com/wongsn) - wongshennan@gmail.com
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
 
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+* [Fireship ](https://www.youtube.com/watch?v=-OTc0Ki7Sv0)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -215,6 +187,7 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
 [contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
