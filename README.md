@@ -30,7 +30,6 @@
 ![succinct cut final screenshot](/images/6_sc.png)
 
 
-
 Unedited videos are full of verbal disfluencies  ("huh", "uh", "erm", "um") and long pauses when the speaker is thinking of what to say. Editing such videos manually is tedious and time consuming.
 
 ##### Succinct cut will
@@ -52,7 +51,6 @@ You can find the deployed app [here](http://cutcut-sigma.vercel.app/)
 | ------------- | ------------------ | ------------------------ | --------------------------------- | -------------------------------- |
 | 21            | 1.04               | 0.53                     | 0.4                               | 11                               |
 | 130           | 6.44               | 5.04                     | 3.53                              | 73                               |
-
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -101,7 +99,6 @@ You can find the deployed app [here](http://cutcut-sigma.vercel.app/)
 - [notion](https://wongshennan.notion.site/Video-Editor-Transcription-2877c4a64f5b46fdaace8af30a474a5d)
 
 
-
 [frontend repo](https://github.com/Ennnm/succinct-cut)
 
 [backend repo](https://github.com/Ennnm/succinct-cut-cloudfunc)
@@ -110,7 +107,7 @@ You can find the deployed app [here](http://cutcut-sigma.vercel.app/)
 
 ### Pipeline
 
-![flowchart](/images/pipeline_mermaid.JPG)
+![flowchart](/images/pipeline_mermaid.jpg)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
