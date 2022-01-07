@@ -1,12 +1,12 @@
 import { Flex } from '@chakra-ui/react'
-import { AppContext } from '../../../pages/index'
+import { AppContext } from '../../context'
 import { useContext, useState, useRef, useEffect } from 'react'
 
 
 
 const VideoSeq = ({ videoSequences, setVideoSequences }) => {
 
-  const { videoSettings, setVideoSettings } = useContext(AppContext)
+  const { videoSettingsRef } = useContext(AppContext)
 
   const splitVideoSequences = (event) => {
 

@@ -5,7 +5,7 @@ import Scrubber from './editor/Scrubber'
 import ProgressBar from './editor/controls/ProgressBar'
 import { Box, Container, VStack, StackDivider, Grid, Flex, HStack } from '@chakra-ui/react'
 import { useRef, useEffect, useState, useContext, createContext, useCallback } from 'react'
-import { AppContext } from '../pages/index'
+import { AppContext } from './context'
 import Timeline from './editor/Timeline'
 import TimelineButtons from './editor/TimelineButtons'
 import FileOptions from './editor/controls/FileOptions'
@@ -14,7 +14,7 @@ export const TimelineContext = createContext()
 
 const Editor = () => {
 
-  const { videoSettings } = useContext(AppContext)
+  const { videoSettingsRef } = useContext(AppContext)
 
   const videoCanvasContainer = useRef()
   const timeline = useRef()

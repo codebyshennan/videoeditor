@@ -2,7 +2,7 @@ import { useState, useContext, useRef, useEffect } from 'react'
 import Draggable from 'react-draggable'
 import { Box, Container, Flex, } from '@chakra-ui/react'
 import { TimelineContext } from '../Editor'
-import { FileContext } from '../../pages/index'
+import { FileContext } from '../context'
 
 
 const Scrubber = ({ videoContainerRef }) => {

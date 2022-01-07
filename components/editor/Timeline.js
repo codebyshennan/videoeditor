@@ -5,7 +5,7 @@ import VideoTimeline from './video/VideoTimeline'
 import { useState, useContext, useEffect, useRef } from 'react'
 import { Flex, VStack, StackDivider } from '@chakra-ui/react'
 
-const Timeline = () => {
+const Timeline = ( { videoContainerRef } ) => {
 
   return (
     <VStack

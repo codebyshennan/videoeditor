@@ -1,17 +1,37 @@
 import { MdOutlineAudiotrack } from 'react-icons/md'
 import { Box, Container, Flex, Icon, Text, HStack, Img } from '@chakra-ui/react'
 import { useState, useEffect, useContext, useRef } from 'react'
-import { AppContext } from '../../../pages/index'
+import { AppContext } from '../../context'
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
 import transcript from '../../../transcript'
 
-const ffmpeg = createFFmpeg({
-  corePath:'/ffmpeg-core/ffmpeg-core.js',
-  log: true
-})
+// https://github.com/beforesemicolon/BFS-Projects/blob/audio-player-tag/audio-player/audio-player.js
 
 const AudioTimeline = () => {
-  const { videoSettings } = useContext(AppContext)
+  const { videoSettingsRef } = useContext(AppContext)
+
+  const initializeAudio = (audio) => {
+    const audioCtx = new AudioContext()
+    const gainNode = audioCtx.createGain()
+    const analyserNode = audioCtx.createAnalyser()
+    analyserNode.fftSize = 2048
+    const bufferLength = analyserNode.frequencyBinCount
+    const dataArray = new Uint8Array(bufferLength)
+    analyserNode.getByteFrequencyData(dataArray)
+    const track = audioCtx.createMediaElementSource(audio)
+
+    track
+      .connect(gainNode)
+      .connect(analyserNode)
+      .connect(audioCtx.destination)
+    
+    changeVolume()
+  }
+
+
+  const updateFrequency = () => {
+    
+  }
   
   return (
     <HStack spacing={0}>

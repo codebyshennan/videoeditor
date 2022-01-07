@@ -5,6 +5,7 @@ import Editor from '../components/Editor'
 import Transcript from '../components/Transcript'
 import Profile from '../components/profile/Profile'
 import Download from '../components/download/Download'
+import { useContext } from 'react'
 
 import { Icon, TabPanel, Tabs, Tab, TabPanels,TabList, useDisclosure  } from '@chakra-ui/react'
 import { CgProfile, CgSoftwareDownload, CgTranscript } from 'react-icons/cg'

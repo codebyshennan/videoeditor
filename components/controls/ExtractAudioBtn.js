@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { extractAudioClip } from '../clip-handlers/extractAudioClip';
 import { ProcessingContext, ffmpegContext, FileContext } from '../context';
 import { timeStampAtStage } from '../../pages/_app'
+import { Button } from '@chakra-ui/react'
 
 const ExtractAudioBtn = () => {
   const { ffmpeg, setAudioUuid } = useContext(ffmpegContext)

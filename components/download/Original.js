@@ -7,7 +7,7 @@ const Original = () => {
 
   const { uploadedVideo, setUploadedVideo, videoStatusRef } = useContext(FileContext)
 
-  
+
 
   const colSpan = useBreakpointValue({ base: 2, md: 1 });
   const onBrowseBtnClick = () => {
@@ -31,7 +31,7 @@ const Original = () => {
             boxShadow={'2xl'}
             rounded={'md'}
             overflow={'hidden'}
-            onClick = { onBrowseButtonClick }
+            onClick = { onBrowseBtnClick }
             >
             
             { uploadedVideo && 
@@ -39,7 +39,7 @@ const Original = () => {
                 ratio={16/9}>
                 <video
                   controls
-                  src={URL.createObjectURL(uploadedVideo)}
+                  src={URL.createObjectURL(uploadedVideo[0])}
                 ></video>
               </AspectRatio>
             }

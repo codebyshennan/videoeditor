@@ -1,4 +1,4 @@
-import { initializeApp, getApps, getApp, analytics, performance, app } from 'firebase/app';
+import { initializeApp, getApps, getApp, app } from 'firebase/app';
 import {
   getAuth,
   connectAuthEmulator,
@@ -33,8 +33,8 @@ const initFirebase = () => {
   if(!getApps().length) {
     if (typeof window != undefined) {
       if('measurementId' in clientCredentials) {
-        analytics()
-        performance()
+        // analytics()
+        // performance()
       }
     }
     

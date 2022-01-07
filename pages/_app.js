@@ -1,5 +1,6 @@
 // import { ApolloProvider } from '@apollo/client'
 // import { useApollo } from '../../apollo/client'
+import Head from 'next/head'
 import { ChakraProvider } from '@chakra-ui/react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -8,7 +9,7 @@ import { useUserData } from '../components/hooks/hooks'
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 import Theme from './theme'
 import Footer from '../components/Footer'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { flattenedTranscript } from '../refTranscriptData/cxTranscripts1min'
 import * as stage from '../components/clip-handlers/stage-constants';
 import NORMS from '../components/norms'
@@ -35,6 +36,9 @@ const App = ({ Component, pageProps }) => {
   const videoStatusRef = useRef()
   const ffmpegRatio = useRef(0);
   videoSettingsRef.current = {
+        initialized: false,
+        barWidth = 3,
+        barGap = 1,
         isPlaying: false,
         isMuted: false,
         isSlice: false,
@@ -52,6 +56,7 @@ const App = ({ Component, pageProps }) => {
         splicedTimings: [],  
         scale: 0,
         speedUp: false,
+        volume: 0.4,
         audio: "",
         audioState: {},
         audioUuid: [],
@@ -63,7 +68,7 @@ const App = ({ Component, pageProps }) => {
       }
 
   const [ ffmpegReady, setffmpegReady ] = useState(false)
-  const [ uploadedVideo, setUploadedVideo ] = useState()
+  const [ uploadedVideo, setUploadedVideo ] = useState([])
   const [ strippedAudio, setStrippedAudio ] = useState()
   const [ audioWaveForm, setAudioWaveform ] = useState()
   const [ audioUuid, setAudioUuid ] = useState();
@@ -84,7 +89,7 @@ const App = ({ Component, pageProps }) => {
   const [ remainingPercentage, setRemainingPercentage] = useState(100)
   const [ transcriptDuration, setTranscriptDuration ] = useState()
 
-  export const timeStampAtStage = (stage) => {
+  const timeStampAtStage = (stage) => {
     const currTime = Math.round(+new Date());
     // can be combined
     let combinedTime = [...timeTaken].push(currTime);
@@ -170,7 +175,13 @@ const App = ({ Component, pageProps }) => {
 
   return (
     // <ApolloProvider client={apolloClient}>
-      <ChakraProvider theme= {{Theme}} >
+    <>
+      <Head>
+          <title> SuccinctCut </title>
+          <meta name="description" content="Make your videos succinct" />
+          <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <ChakraProvider theme= {Theme} >
         <UserContext.Provider value = {{ userData }} >
           <ffmpegContext.Provider 
             value = {{ 
@@ -215,6 +226,7 @@ const App = ({ Component, pageProps }) => {
           </ffmpegContext.Provider>
         </UserContext.Provider>
       </ChakraProvider>
+    </>
     // </ApolloProvider>
   )
 }

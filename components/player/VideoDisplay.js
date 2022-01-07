@@ -1,12 +1,12 @@
 import { useRef, useEffect, useContext, useState, forwardRef } from 'react'
-import { AppContext, FileContext } from '../../pages/index'
+import { AppContext, FileContext } from '../context'
 import { Flex, AspectRatio, Container } from '@chakra-ui/react'
 
 const VideoDisplay = ({ videoContainerRef }) => {
 
-  const { fileUploads, setFileUploads, videoStatus } = useContext(FileContext)
+  const { uploadedVideo, setUploadedVideo, videoStatus } = useContext(FileContext)
   const [ playerSource, setPlayerSource ] = useState(null)
-  const { videoSettings } = useContext(AppContext)
+  const { videoSettingsRef } = useContext(AppContext)
   const ratio = useRef( 16/9 )
   // console.log(ratio.current)
 
@@ -14,15 +14,15 @@ const VideoDisplay = ({ videoContainerRef }) => {
   useEffect(()=> {
     // assuming there's only one video
     // first convert to object URL (data parsed is raw file)
-    if(playerSource == null && fileUploads.length != 0) {
-      const url = URL.createObjectURL(fileUploads[0])
+    if(playerSource == null && uploadedVideo.length != 0) {
+      const url = URL.createObjectURL(uploadedVideo[0])
       videoContainerRef.current.src = url
       // setPlayerSource(url)
     } else {
       return
     }
 
-  }, [fileUploads])
+  }, [uploadedVideo])
 
 
   const handlePlay = (ev) => {

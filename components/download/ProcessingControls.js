@@ -1,16 +1,20 @@
 import React, { useContext, useState, useEffect} from 'react'
-import { Box, Tooltip, HStack } from '@chakra-ui/react'
+import { Box, Tooltip, HStack, Container, Button } from '@chakra-ui/react'
 import ExtractAudioBtn from '../controls/ExtractAudioBtn'
 import OptimizeBtn from '../controls/OptimizeBtn'
 
 const ProcessingControls = () => {
   
+  //   const onDownloadClick = () => {
+  //   downloadAnchor.current.click();
+  // };
+
 
 
   return (
     <Container>
 
-      <Button variant="ghost" onClick={onBrowseBtnClick}>
+      <Button variant="ghost">
         Browse ...
       </Button>
 
@@ -19,14 +23,14 @@ const ProcessingControls = () => {
 
       <Button
         variant="ghost"
-        onClick={onDownloadClick}
-        isDisabled={!cleanedClip}
+        // onClick={onDownloadClick}
+        // isDisabled={!cleanedClip}
       >
         Download
       </Button>
       <a
-        ref={downloadAnchor}
-        href={cleanedClip}
+        // ref={downloadAnchor}
+        // href={cleanedClip}
         download={'result.mp4'}
         style={{ display: 'none' }}
       >

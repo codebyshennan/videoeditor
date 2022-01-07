@@ -1,5 +1,5 @@
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { auth, storage, STATE_CHANGED } from '../firebase';
+import { auth, storage, STATE_CHANGED } from '../firebase/init';
 import { logProgress } from './setProgress';
 
 export const uploadAudio = async (file, filename) => {

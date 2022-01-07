@@ -3,6 +3,7 @@ import Optimized from './Optimized';
 import Original from './Original';
 import TranscriptStatusBar from './TranscriptStatusBar';
 import ProcessingControls from './ProcessingControls'
+import ProgressBar from '../editor/controls/ProgressBar';
 import { useEffect, useContext } from 'react'
 
 

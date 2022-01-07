@@ -1,7 +1,7 @@
 
 import { useCallback, useMemo, useRef, useContext } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { AppContext, FileContext } from '../../pages/index';
+import { AppContext, FileContext } from '../context';
 import FileCard from './FileCard'
 import { v4 as uuidv4} from 'uuid'
 import { useToast } from '@chakra-ui/react'
@@ -37,7 +37,7 @@ const styles = {
 
 const FileUpload = () => {
   const toast = useToast()
-  const { fileUploads, setFileUploads } = useContext(FileContext)
+  const { uploadedVideo, setUploadedVideo } = useContext(FileContext)
   const { videoSettings } = useContext(AppContext)
   const thumbnailContainer = useRef()
   const waveFormContainer = useRef()
@@ -127,7 +127,7 @@ const FileUpload = () => {
         video.play()
       }
       reader.readAsArrayBuffer(file)
-      setFileUploads([...fileUploads, file])
+      setUploadedVideo([...uploadedVideo, file])
 
     })
   }, [])
@@ -145,7 +145,7 @@ const FileUpload = () => {
             })
       }
     }
-  }
+
 
   const { fileRejections, getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone( { onDrop, accept: '.mp4', validator: fileValidator } )
 

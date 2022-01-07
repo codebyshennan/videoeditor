@@ -1,16 +1,10 @@
-import { Heading, VStack, Image, AspectRatio, Text, Divider, Stack, useColorMode
-  Button, Container, Box, Flex, } from '@chakra-ui/react';
+import { Heading, VStack, Image, AspectRatio, Text, Divider, Stack, useColorMode, Button, Container, Box, Flex, useColorModeValue} from '@chakra-ui/react';
 import { useContext } from 'react'
-import { FileContext } from '../../pages/index'
+import { FileContext } from '../context'
 
-const Optimized = () => {\
+const Optimized = () => {
   
   const { uploadedVideo, setUploadedVideo, videoStatusRef } = useContext(FileContext)
-
-  const onDownloadClick = () => {
-    downloadAnchor.current.click();
-  };
-
 
   return (
     <VStack
@@ -29,7 +23,7 @@ const Optimized = () => {\
               boxShadow={'2xl'}
               rounded={'md'}
               overflow={'hidden'}
-              onClick = {onDownloadClick}>
+              >
 
               <AspectRatio
                 ratio={16/9}>

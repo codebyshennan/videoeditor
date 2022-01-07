@@ -6,12 +6,12 @@ import { useContext, useState } from 'react'
 import { MdOutlinePanTool } from "react-icons/md"
 import { SiSpeedtest } from 'react-icons/si'
 import { useDisclosure } from "@chakra-ui/react"
-import { AppContext } from "../../../pages/index"
+import { AppContext } from "../../context"
 import { useColorMode, useColorModeValue } from '@chakra-ui/react'
 
 const PlayerControls = ({ videoContainerRef }) => {
 
-    const { videoSettings } = useContext(AppContext)
+    const { videoSettingsRef } = useContext(AppContext)
     const [ refresh, setRefresh] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
     
@@ -20,7 +20,7 @@ const PlayerControls = ({ videoContainerRef }) => {
     const bg = useColorModeValue('white', 'gray.800')
 
     const togglePlay = (ev) => {
-      const playStatus = videoSettings.current.isPlaying
+      const playStatus = videoSettingsRef.current.isPlaying
 
       if(playStatus && 
         videoContainerRef.current.currentTime > 0 && 
@@ -35,16 +35,16 @@ const PlayerControls = ({ videoContainerRef }) => {
         setRefresh(!refresh)
       }
 
-      videoSettings.current = {
-        ...videoSettings.current,
+      videoSettingsRef.current = {
+        ...videoSettingsRef.current,
         isPlaying: playStatus
       }
     }
 
     const toggleSpeed = (ev)=> {
-      videoSettings.current = {
-        ...videoSettings.current,
-        speedUp: !videoSettings.current.speedUp
+      videoSettingsRef.current = {
+        ...videoSettingsRef.current,
+        speedUp: !videoSettingsRef.current.speedUp
       }
       setRefresh(!refresh)
 
@@ -54,26 +54,26 @@ const PlayerControls = ({ videoContainerRef }) => {
       if(videoContainerRef.current) {
         videoContainerRef.current.muted = !videoContainerRef.current.muted
       } 
-      videoSettings.current = {
-        ...videoSettings.current,
-        isMuted: !videoSettings.current.isMuted
+      videoSettingsRef.current = {
+        ...videoSettingsRef.current,
+        isMuted: !videoSettingsRef.current.isMuted
       }
       setRefresh(!refresh)
     }
 
     const toggleSlice = (ev) => {
-      videoSettings.current = {
-        ...videoSettings.current,
-        isSlice: !videoSettings.current.isSlice,
+      videoSettingsRef.current = {
+        ...videoSettingsRef.current,
+        isSlice: !videoSettingsRef.current.isSlice,
         isPan: false
       }
       setRefresh(!refresh)
     }
 
     const togglePan = (ev) => {
-      videoSettings.current = {
-        ...videoSettings.current,
-        isPan: !videoSettings.current.isPan,
+      videoSettingsRef.current = {
+        ...videoSettingsRef.current,
+        isPan: !videoSettingsRef.current.isPan,
         isSlice: false,
       }
       setRefresh(!refresh)
@@ -95,21 +95,21 @@ const PlayerControls = ({ videoContainerRef }) => {
       >
         <Button 
           leftIcon={<Icon as={SiSpeedtest}
-          variant= { videoSettings.current.speedUp ? "solid" : "outline"}
+          variant= { videoSettingsRef.current.speedUp ? "solid" : "outline"}
           onClick={ toggleSpeed }
           />}>
         2x
         </Button>
         <Button 
           leftIcon={<Icon as={FaCut}/>} 
-          variant={ videoSettings.current.isSlice ? "solid" : "outline"}
+          variant={ videoSettingsRef.current.isSlice ? "solid" : "outline"}
           onClick={toggleSlice}
           >
           Slice
         </Button>
         <Button 
           leftIcon={<Icon as={MdOutlinePanTool} />} 
-          variant= { videoSettings.current.isPan ? "solid" : "outline"}
+          variant= { videoSettingsRef.current.isPan ? "solid" : "outline"}
           onClick={togglePan}>
           Pan
         </Button>
@@ -121,7 +121,7 @@ const PlayerControls = ({ videoContainerRef }) => {
           leftIcon={<Icon as={FaFastBackward}/> } 
           variant="outline" />
 
-          { videoSettings.current.isPlaying ? 
+          { videoSettingsRef.current.isPlaying ? 
             <Button
               onClick={ togglePlay } 
               variant="outline"
@@ -140,7 +140,7 @@ const PlayerControls = ({ videoContainerRef }) => {
             leftIcon={<Icon as={FaFastForward} /> } 
             variant="outline" /> 
           
-          { videoSettings.current.isMuted ? 
+          { videoSettingsRef.current.isMuted ? 
             <Button
               leftIcon={<Icon as={FaVolumeUp} /> }
               onClick={ toggleMute } 
