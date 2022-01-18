@@ -1,11 +1,10 @@
 import { useContext } from 'react'
 import { extractAudioClip } from '../clip-handlers/extractAudioClip';
 import { ProcessingContext, ffmpegContext, FileContext } from '../context';
-import { timeStampAtStage } from '../../pages/_app'
 import { Button } from '@chakra-ui/react'
 
 const ExtractAudioBtn = () => {
-  const { ffmpeg, setAudioUuid } = useContext(ffmpegContext)
+  const { ffmpeg, setAudioUuid, timeStampAtStage } = useContext(ffmpegContext)
   const { uploadedVideo } = useContext(FileContext)
   const { setAudioAnalysisBegan, setTimeTaken, processStage } = useContext(ProcessingContext)
   //also run webworker to extract audio waveform using ffmpeg

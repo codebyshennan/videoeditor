@@ -2,11 +2,11 @@ import { useContext } from 'react'
 import { Button } from '@chakra-ui/react'
 import { ffmpegContext, FileContext, ProcessingContext, TranscriptionContext } from '../context'
 import { cleanClip } from '../clip-handlers/cleanClip'
-import { timeStampAtStage, PROCESSEDAUDIOFN } from '../../pages/_app'
+import { PROCESSEDAUDIOFN } from '../../pages/_app'
 
 const OptimizeBtn = () => {
   const { setCleanedClip, processStage } = useContext(ProcessingContext)
-  const { ffmpeg } = useContext(ffmpegContext)
+  const { ffmpeg, timeStampAtStage } = useContext(ffmpegContext)
   const { uploadedVideo } = useContext(FileContext)
   const { transcription, setMergedTranscript, setCleanedTranscript, setTranscriptDuration } = useContext(TranscriptionContext)
 

@@ -22,7 +22,7 @@ const VideoDisplay = ({ videoContainerRef }) => {
       return
     }
 
-  }, [uploadedVideo])
+  }, [uploadedVideo]) // look at this
 
 
   const handlePlay = (ev) => {

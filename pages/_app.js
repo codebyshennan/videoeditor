@@ -7,7 +7,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { UserContext, ffmpegContext, FileContext, AppContext, ProcessingContext, TranscriptionContext } from '../components/context'
 import { useUserData } from '../components/hooks/hooks'
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
-import Theme from './theme'
+import Theme from '../components/theme'
 import Footer from '../components/Footer'
 import { useState, useRef, useEffect } from 'react'
 import { flattenedTranscript } from '../refTranscriptData/cxTranscripts1min'
@@ -25,6 +25,8 @@ export const FINALAUDIO = 'finalAudio.aac';
 export const PROCESSEDAUDIOFN = 'finalcut.mp4';
 export const WAVEFORM = 'waveform.png'
 
+let user = {}
+
 const App = ({ Component, pageProps }) => {
   // const apolloClient = useApollo(pageProps.initialApolloState)
 
@@ -37,8 +39,8 @@ const App = ({ Component, pageProps }) => {
   const ffmpegRatio = useRef(0);
   videoSettingsRef.current = {
         initialized: false,
-        barWidth = 3,
-        barGap = 1,
+        barWidth: 3,
+        barGap: 1,
         isPlaying: false,
         isMuted: false,
         isSlice: false,
@@ -188,7 +190,8 @@ const App = ({ Component, pageProps }) => {
               ffmpeg, 
               ffmpegReady, setffmpegReady,
               audioWaveForm, setAudioWaveform,
-              audioUuid, setAudioUuid 
+              audioUuid, setAudioUuid,
+              timeStampAtStage
             }} 
           >
             <AppContext.Provider 

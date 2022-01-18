@@ -39,7 +39,7 @@ const Original = () => {
                 ratio={16/9}>
                 <video
                   controls
-                  src={URL.createObjectURL(uploadedVideo[0])}
+                  src={ uploadedVideo[0] ? URL.createObjectURL(uploadedVideo[0]) : ""}
                 ></video>
               </AspectRatio>
             }

@@ -158,9 +158,9 @@ const PlayerControls = ({ videoContainerRef }) => {
       <Stack
       direction = "row"
       >
-        <Button leftIcon={ colorMode == 'dark' ? 
-          <Icon as={FaSun} onClick={toggleColorMode} /> : 
-          <Icon as={FaMoon} onClick={toggleColorMode}/> } variant="outline"> Mode </Button>
+        <Button onClick={toggleColorMode} leftIcon={ colorMode == 'dark' ? 
+          <Icon as={FaSun}  /> : 
+          <Icon as={FaMoon} /> } variant="outline"> Mode </Button>
         <Button leftIcon={<Icon as={FaInfoCircle} />} variant="outline" onClick={onOpen}> Help </Button>
         <DisplayHelp isOpen={isOpen} onClose={onClose} />
       </Stack>

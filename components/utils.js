@@ -20,6 +20,7 @@ export const parseTranscript = (
   setTranscriptDuration
   ) => {
 
+    if (!transcripts) return
     const transcriptDuration = transcripts[transcripts.length - 1].endTime
     setTranscriptDuration(transcriptDuration);
 
